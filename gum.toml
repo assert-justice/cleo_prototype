@@ -1,0 +1,16 @@
+# build script
+name = "cleo"
+version = "0.1.0"
+
+[defaults]
+compiler = "gcc"
+language = "c"
+header = ".h"
+src = ".c"
+options = ["-Wall", "-Wextra"]
+
+[debug]
+optimization = "-O0"
+
+[release]
+optimization = "-O2"
