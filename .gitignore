@@ -1,0 +1,7 @@
+*.exe
+*.a
+*.o
+*.s
+*.lib
+include/*
+.vscode/

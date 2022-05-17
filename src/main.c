@@ -17,16 +17,14 @@
 
 #include <stdio.h>
 #include "wren/wren.h"
+#include "wren_help/wren_help.h"
 
-void writeFn(WrenVM* vm, const char* text) {
-  printf("%s", text);
-}
+// void writeFn(WrenVM* vm, const char* text) {
+//   printf("%s", text);
+// }
 
 int main(int argc, char* argv[]){
-    WrenConfiguration config;
-    wrenInitConfiguration(&config);
-    config.writeFn = &writeFn;
-    WrenVM* vm = wrenNewVM(&config);
+    WrenVM* vm = wrenInit();
     WrenInterpretResult result = wrenInterpret(vm, "my_module",
     "System.print(\"I am running in a VM!\")");
     return 0;
