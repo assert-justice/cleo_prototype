@@ -16,6 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <stdio.h>
+#include "wren/wren.h"
 int main(int argc, char* argv[]){
     printf("hello world!");
     return 0;
