@@ -19,12 +19,8 @@
 #include "wren/wren.h"
 #include "wren_help/wren_help.h"
 
-// void writeFn(WrenVM* vm, const char* text) {
-//   printf("%s", text);
-// }
-
 int main(int argc, char* argv[]){
-    WrenVM* vm = wrenInit();
+    WrenVM* vm = wrenHelpInit();
     WrenInterpretResult result = wrenInterpret(vm, "my_module",
     "System.print(\"I am running in a VM!\")");
     return 0;

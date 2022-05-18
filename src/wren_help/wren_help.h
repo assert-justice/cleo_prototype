@@ -8,4 +8,4 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
              const char* module, const int line,
              const char* msg);
 
-WrenVM* wrenInit();
+WrenVM* wrenHelpInit();

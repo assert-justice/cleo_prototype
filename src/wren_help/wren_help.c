@@ -27,7 +27,7 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
   }
 }
 
-WrenVM* wrenInit()
+WrenVM* wrenHelpInit()
 {
     WrenConfiguration config;
     wrenInitConfiguration(&config);
