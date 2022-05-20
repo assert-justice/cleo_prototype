@@ -1,7 +1,8 @@
 import os
 
 def template(fname, ext, text : str):
-    lines = [f'"{line}\\n"' for line in text.splitlines()]
+    lines = [line.replace(r'"',r'\"') for line in text.splitlines()]
+    lines = [f'"{line}\\n"' for line in lines]
     lines = "\n".join(lines)
     return f'''// Generated automatically from {fname + ext}. Do not edit.
 static const char* {fname} =
@@ -22,7 +23,7 @@ def get_files():
 
 def generate_includes():
     # script_dir = os.path.join("wren_scripts")
-    include_dir = os.path.join("src","wren_scripts")
+    include_dir = os.path.join("src","wren_inc")
     for path, name, ext in get_files():
         with open(path) as script_f:
             with open(os.path.join(include_dir, name + ext + ".inc"), "w") as include_f:

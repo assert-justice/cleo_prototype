@@ -1,7 +1,9 @@
 #ifndef WREN_HELP
 #include "wren_help.h"
 #include "stdio.h"
-static void writeFn(WrenVM* vm, const char* text)
+#include "string.h"
+
+void writeFn(WrenVM* vm, const char* text)
 {
   printf("%s", text);
 }
@@ -27,13 +29,18 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
   }
 }
 
+void moduleLoader(WrenVM* vm, const char* name)
+{
+  // TODO: 
+}
+
 WrenVM* wrenHelpInit()
 {
-    WrenConfiguration config;
-    wrenInitConfiguration(&config);
-    config.writeFn = &writeFn;
-    config.errorFn = &errorFn;
-    WrenVM* vm = wrenNewVM(&config);
-    return vm;
+  WrenConfiguration config;
+  wrenInitConfiguration(&config);
+  config.writeFn = &writeFn;
+  config.errorFn = &errorFn;
+  WrenVM* vm = wrenNewVM(&config);
+  return vm;
 }
 #endif

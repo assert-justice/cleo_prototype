@@ -18,10 +18,11 @@
 #include <stdio.h>
 #include "wren/wren.h"
 #include "wren_help/wren_help.h"
+#include "wren_inc/hello.wren.inc"
 
-int main(int argc, char* argv[]){
+// int main(int argc, char* argv[]){
+int main(){
     WrenVM* vm = wrenHelpInit();
-    WrenInterpretResult result = wrenInterpret(vm, "my_module",
-    "System.print(\"I am running in a VM!\")");
+    wrenInterpret(vm, "my_module", hello);
     return 0;
 }
