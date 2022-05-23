@@ -1,12 +1,26 @@
 import os
 
 def template(fname, ext, text : str):
-    lines = [line.replace(r'"',r'\"') for line in text.splitlines()]
+    def rep(line : str):
+        line = line.replace(r"\"", "~")
+        line = line.replace(r'"',r'\"')
+        line = line.replace("~", r"\"")
+        return line
+    lines = [rep(line) for line in text.splitlines()]
     lines = [f'"{line}\\n"' for line in lines]
     lines = "\n".join(lines)
     return f'''// Generated automatically from {fname + ext}. Do not edit.
 static const char* {fname} =
 {lines};
+'''
+
+def template_bin(fname, ext, text : str):
+    chars = [str(ord(c)) for c in text]
+    chars.append("0") # zero terminated strings baybeee
+    chars = ",".join(chars)
+    chars = "{" + chars + "}"
+    return f'''// Generated automatically from {fname + ext}. Do not edit.
+static const char {fname}[] = {chars};
 '''
 
 def get_files():
@@ -27,7 +41,7 @@ def generate_includes():
     for path, name, ext in get_files():
         with open(path) as script_f:
             with open(os.path.join(include_dir, name + ext + ".inc"), "w") as include_f:
-                text = template(name, ext, script_f.read())
+                text = template_bin(name, ext, script_f.read())
                 include_f.write(text)
     # scripts = [fname for fname in os.scandir(script_dir) if os.path.splitext(fname)[1] == ".wren"]
     # for script in scripts:

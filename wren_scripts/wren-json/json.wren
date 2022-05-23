@@ -84,9 +84,6 @@ class JsonStringify {
     if(value is String) {
       var string = "%(value)"
         //basic json escaping. todo: this isn't extensive
-        string = string.replace("\\", "\\\\") // double backslash must be first
-        string = string.replace("\"", "\\\"") // then replace single 
-        string = string.replace("\n", "\\n")  
       out.call("\"%(string)\"")
     } else if(value is Num || value is Null || value is Bool) {
       out.call("%(value)")

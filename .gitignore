@@ -3,5 +3,5 @@
 *.o
 *.s
 *.lib
-include/*
+libs/*
 .vscode/

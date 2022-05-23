@@ -1,0 +1,5 @@
+Removed the following because it was causing problems. Figure out how to solve when I can be bothered
+Removed from line 87 of json.wren
+        string = string.replace("\\", "\\\\") // double backslash must be first
+        string = string.replace("\"", "\\\"") // then replace single 
+        string = string.replace("\n", "\\n")  
