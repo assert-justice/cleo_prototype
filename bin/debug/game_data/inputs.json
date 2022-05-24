@@ -1,0 +1,100 @@
+{
+    "default_profile":{
+        "menu_mode":{
+            "protected": true,
+            "ui_up":{
+                "type": "button",
+                "pulse_delay": 0.25,
+                "pulse_time": 0.1,
+                "keys":[
+                    {
+                        "name":"up"
+                    },
+                    {
+                        "name":"w"
+                    }
+                ],
+                "pad_buttons":[
+                    {
+                        "name":"d_up"
+                    }
+                ],
+                "pad_axes":[
+                    {
+                        "name": "rsy",
+                        "threshold": 0.25,
+                        "sign": ">"
+                    }
+                ]
+            },
+            "ui_confirm":{
+                "type": "button",
+                "keys":[
+                    {
+                        "name":"space"
+                    },
+                    {
+                        "name":"enter"
+                    }
+                ],
+                "pad_buttons":[
+                    {
+                        "name":"confirm"
+                    }
+                ]
+            }
+        },
+        "default_mode":{
+            "fire":{
+                "type": "button",
+                "keys":[
+                    {
+                        "name": "space",
+                        "modifier": null
+                    }
+                ],
+                "pad_buttons":[
+                    {
+                        "name": "a"
+                    }
+                ],
+                "pad_axes":[
+                    {
+                        "name": "rsy",
+                        "threshold": "deadzone",
+                        "sign": ">"
+                    }
+                ]
+            },
+            "spin":{
+                "type": "button",
+                "keys":[
+                    {
+                        "key": "l_shift",
+                        "modifier": null
+                    }
+                ],
+                "pad_buttons":[
+                    {
+                        "name": "b"
+                    }
+                ],
+                "pad_axes":[
+                    {
+                        "name": "rsx",
+                        "threshold": 0,
+                        "sign": "<"
+                    }
+                ]
+            },
+            "move":{
+                "type": "axis2",
+                "filter_mode": "default",
+                "deadzone": 0.25,
+                "x_axis":{
+    
+                }
+            }
+        }
+    }
+}

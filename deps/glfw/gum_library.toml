@@ -1,0 +1,6 @@
+[os_specific]
+osx = ["cocoa_time.h", "cocoa_time.c", "posix_thread.h", "posix_module.c", "posix_thread.c"]
+# win = ["win32_time.h", "win32_thread.h", "win32_module.c", "win32_time.c", "win32_thread.c"]
+posix = ["posix_time.h", "posix_thread.h", "posix_module.c", "posix_time.c", "posix_thread.c",
+"x11_platform.h", "xkb_unicode.h", "x11_init.cx11_monitor.c", "x11_window.c", "xkb_unicode.cglx_context.c",
+"posix_poll.h", "posix_poll.c", "glx_context.c","linux_joystick.c","wl_init.c","wl_monitor.c","wl_window.c","x11_init.c", "x11_monitor.c","xkb_unicode.c"]
