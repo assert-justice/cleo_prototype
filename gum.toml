@@ -8,6 +8,7 @@ language = "c"
 header = ".h"
 src = ".c"
 options = ["-Wall", "-Wextra"]
+libs = ["-lopengl32", "-lmingw32", "-lgdi32", "-luser32", "-lkernel32"]
 
 [debug]
 optimization = "-O0"
