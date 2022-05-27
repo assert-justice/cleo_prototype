@@ -2649,7 +2649,7 @@ GLAD_API_CALL int gladLoadGLES2( GLADloadfunc load);
 #endif
 
 /* Source */
-// #ifdef GLAD_GLES2_IMPLEMENTATION
+#ifdef GLAD_GLES2_IMPLEMENTATION
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -3588,5 +3588,5 @@ int gladLoadGLES2( GLADloadfunc load) {
 }
 #endif
 
-// #endif /* GLAD_GLES2_IMPLEMENTATION */
+#endif /* GLAD_GLES2_IMPLEMENTATION */
 
