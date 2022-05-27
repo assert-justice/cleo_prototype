@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include "wren/wren.h"
 #include "wren_help/wren_help.h"
-#include "glad/gles2.h"
+#include "extern/glad/gles2.h"
 #include "GLFW/glfw3.h"
 
 void error_callback(int error, const char* description)
