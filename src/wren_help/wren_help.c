@@ -2,9 +2,8 @@
 #include "wren_help.h"
 #include "stdio.h"
 #include "string.h"
-#include "../wren_inc/json.wren.inc"
-#include "../wren_inc/file_system.wren.inc"
-#include "../file_io/file_io.h"
+#include "../wren_inc.h"
+#include "../file_io/file_io_bindings.h"
 
 void writeFn(WrenVM* vm, const char* text)
 {
@@ -56,19 +55,8 @@ WrenForeignMethodFn bindForeignMethod(WrenVM* vm,
   bool isStatic,
   const char* signature)
 {
-  if (strcmp(module, "fs") == 0){
-    if (strcmp(className, "FileSystem") == 0){
-      if(strcmp(signature, "read(_)") == 0 && isStatic){
-        return readFileHook;
-      }
-      else if(strcmp(signature, "fileExists(_)") == 0 && isStatic){
-        return fileExistsHook;
-      }
-      else if(strcmp(signature, "write(_,_)") == 0 && isStatic){
-        return writeFileHook;
-      }
-    }
-  }
+  WrenForeignMethodFn method;
+  if (method = bindFileIO(module, className, isStatic, signature)) return method;
   printf("Bind attempt failed\nmodule: '%s' match: %i\nclassName: '%s' match: %i\nsignature: '%s' match: %i\n", 
     module, strcmp(module, "fs"), className, strcmp(className, "FileSystem"), signature, strcmp(signature, "read(_)"));
   return NULL;

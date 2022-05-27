@@ -1,27 +1,15 @@
 import os
 
-def template(fname, ext, text : str):
-    def rep(line : str):
-        line = line.replace(r"\"", "~")
-        line = line.replace(r'"',r'\"')
-        line = line.replace("~", r"\"")
-        return line
-    lines = [rep(line) for line in text.splitlines()]
-    lines = [f'"{line}\\n"' for line in lines]
-    lines = "\n".join(lines)
-    return f'''// Generated automatically from {fname + ext}. Do not edit.
-static const char* {fname} =
-{lines};
-'''
-
-def template_bin(fname, ext, text : str):
+def format_script(fname, text : str):
     chars = [str(ord(c)) for c in text]
     chars.append("0") # zero terminated strings baybeee
     chars = ",".join(chars)
     chars = "{" + chars + "}"
-    return f'''// Generated automatically from {fname + ext}. Do not edit.
-static const char {fname}[] = {chars};
-'''
+    return f"static const char {fname}[] = {chars};"
+
+# def template(files):
+#     lines = 
+#     return "// Generated automatically from scripts in wren_scripts. Do not edit."
 
 def get_files():
     out = []
@@ -30,25 +18,31 @@ def get_files():
             path = os.path.join(root, name)
             name, ext = os.path.splitext(name)
             if ext == ".wren":
-                out.append((path,name,ext,))
+                out.append((path,name))
     return out
 
 # Build include files based on wren sourcecode
 
 def generate_includes():
     # script_dir = os.path.join("wren_scripts")
-    include_dir = os.path.join("src","wren_inc")
-    for path, name, ext in get_files():
-        with open(path) as script_f:
-            with open(os.path.join(include_dir, name + ext + ".inc"), "w") as include_f:
-                text = template_bin(name, ext, script_f.read())
-                include_f.write(text)
-    # scripts = [fname for fname in os.scandir(script_dir) if os.path.splitext(fname)[1] == ".wren"]
-    # for script in scripts:
-    #     with open(os.path.join(script_dir, script.name)) as script_f:
-    #         with open(os.path.join(include_dir, script.name + ".inc"), "w") as include_f:
-    #             text = template(script.name, script_f.read())
-    #             include_f.write(text)
+    include_dir = os.path.join("src","wren_inc.h")
+    lines = []
+    for path, name in get_files():
+        with open(path) as src_file:
+            lines.append(format_script(name, src_file.read()))
+    
+    lines = "\n".join(lines)
+    with open(include_dir, "w") as include_f:
+        include_f.write(
+            f'''#ifndef WREN_INC
+#define WREN_INC
+{lines}
+#endif
+''')
+#             lines = []
+#             with open(path) as script_f:
+#                 lines.append(format_script(name, script_f.read()))
+#             print(len(lines))
 
 if __name__ == "__main__":
     generate_includes()

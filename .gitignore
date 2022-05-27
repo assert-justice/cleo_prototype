@@ -3,5 +3,4 @@
 *.o
 *.s
 *.lib
-libs/*
 .vscode/
