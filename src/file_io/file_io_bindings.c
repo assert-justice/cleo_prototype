@@ -14,16 +14,16 @@ void readFileHook(WrenVM* vm)
   free(text);
 }
 
-// void fileExistsHook(WrenVM* vm){
-//   const char* fname = wrenGetSlotString(vm, 1);
-//   wrenSetSlotBool(vm, 0, fileExists(fname));
-// }
+void fileExistsHook(WrenVM* vm){
+  const char* fname = wrenGetSlotString(vm, 1);
+  wrenSetSlotBool(vm, 0, fileExists(fname));
+}
 
-// void writeFileHook(WrenVM* vm){
-//   const char* fname = wrenGetSlotString(vm, 1);
-//   const char* text = wrenGetSlotString(vm, 2);
-//   writeFile(fname, text);
-// }
+void writeFileHook(WrenVM* vm){
+  const char* fname = wrenGetSlotString(vm, 1);
+  const char* text = wrenGetSlotString(vm, 2);
+  writeFile(fname, text);
+}
 
 WrenForeignMethodFn bindFileIO(
   const char* module,
@@ -36,15 +36,13 @@ WrenForeignMethodFn bindFileIO(
       if(strcmp(signature, "read(_)") == 0 && isStatic){
         return readFileHook;
       }
-    //   else if(strcmp(signature, "fileExists(_)") == 0 && isStatic){
-    //     return fileExistsHook;
-    //   }
-    //   else if(strcmp(signature, "write(_,_)") == 0 && isStatic){
-    //     return writeFileHook;
-    //   }
+      else if(strcmp(signature, "fileExists(_)") == 0 && isStatic){
+        return fileExistsHook;
+      }
+      else if(strcmp(signature, "write(_,_)") == 0 && isStatic){
+        return writeFileHook;
+      }
     }
   }
-//   printf("Bind attempt failed\nmodule: '%s' match: %i\nclassName: '%s' match: %i\nsignature: '%s' match: %i\n", 
-//     module, strcmp(module, "fs"), className, strcmp(className, "FileSystem"), signature, strcmp(signature, "read(_)"));
   return NULL;
 }

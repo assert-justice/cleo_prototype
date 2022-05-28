@@ -4,6 +4,7 @@
 #include "string.h"
 #include "../wren_inc.h"
 #include "../file_io/file_io_bindings.h"
+#include "../engine/engine_bindings.h"
 
 void writeFn(WrenVM* vm, const char* text)
 {
@@ -36,11 +37,15 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   WrenLoadModuleResult result = {0};
   if (strcmp(name, "json") == 0)
   {
-    result.source = json;
+    result.source = json_script;
   }
   else if (strcmp(name, "fs") == 0)
   {
-    result.source = file_system;
+    result.source = file_system_script;
+  }
+  else if (strcmp(name, "engine") == 0)
+  {
+    result.source = file_system_script;
   }
   else
   {
@@ -56,7 +61,8 @@ WrenForeignMethodFn bindForeignMethod(WrenVM* vm,
   const char* signature)
 {
   WrenForeignMethodFn method;
-  if (method = bindFileIO(module, className, isStatic, signature)) return method;
+  if ((method = bindFileIO(module, className, isStatic, signature))) return method;
+  if ((method = bindEngine(module, className, isStatic, signature))) return method;  
   printf("Bind attempt failed\nmodule: '%s' match: %i\nclassName: '%s' match: %i\nsignature: '%s' match: %i\n", 
     module, strcmp(module, "fs"), className, strcmp(className, "FileSystem"), signature, strcmp(signature, "read(_)"));
   return NULL;

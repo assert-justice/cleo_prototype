@@ -5,7 +5,7 @@ def format_script(fname, text : str):
     chars.append("0") # zero terminated strings baybeee
     chars = ",".join(chars)
     chars = "{" + chars + "}"
-    return f"static const char {fname}[] = {chars};"
+    return f"static const char {fname}_script[] = {chars};"
 
 # def template(files):
 #     lines = 
