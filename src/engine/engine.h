@@ -18,10 +18,10 @@ typedef struct {
     int internalWidth;
     int internalHeight;
 } Engine;
-#endif
 
 // Initialize the engine. 
 //
 // Starts wren vm, reads settings, and launches subsystems.
 int initEngine();
 void gameLoop();
+#endif
