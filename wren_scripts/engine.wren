@@ -6,15 +6,15 @@ class Engine {
     static init(){
         var defaultWindow = {
             "name": "Cleo",
-            "mode": 0, // 0: windowed, 1: borderless fullscreen, 2: exclusive fullscreen
+            "windowMode": 0, // 0: windowed, 1: borderless fullscreen, 2: exclusive fullscreen
             "monitor": 0,
-            "window_width": 640,
-            "window_height": 480,
-            "refresh_rate": 0, // 0 indicates maximum availible
+            "windowWidth": 800,
+            "windowHeight": 600,
+            "refreshRate": 0, // 0 indicates maximum availible
             "vsync": true,
-            "pixel_mode": 0, // 0: pixel perfect, 1: stretch width, 2: stretch height, 3: stretch both
-            "internal_width": 400,
-            "internal_height": 200,
+            "pixelMode": 0, // 0: pixel perfect, 1: stretch width, 2: stretch height, 3: stretch both
+            "internalWidth": 400,
+            "internalHeight": 200,
         }
         // load settings if availible
         var settings = {}
@@ -28,8 +28,14 @@ class Engine {
             }
         }
         // set the state of the engine struct
-        privateInit(defaultWindow)
+        privateSetSettings(settings)
+        System.print(settings)
+        var newSettings = getSettings()
+        System.print(newSettings)
     }
+    // foreign static privateInit(settings)
+    foreign static privateSetSettings(settings)
+    foreign static getSettings()
+    // foreign static updateWindow()
 
-    foreign static privateInit(settings)
 }

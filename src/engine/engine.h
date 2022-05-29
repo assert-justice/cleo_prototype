@@ -8,12 +8,12 @@ typedef struct {
     GLFWwindow* window;
     WrenVM* vm;
     char* name;
-    int mode;
+    int windowMode;
     int monitor;
     int windowWidth;
     int windowHeight;
     int refreshRate;
-    int vsync;
+    bool vsync;
     int pixelMode;
     int internalWidth;
     int internalHeight;

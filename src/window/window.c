@@ -31,7 +31,7 @@ int initWindow(){
         return 0;
     }
     glfwSetErrorCallback(error_callback);
-    GLFWwindow* window = glfwCreateWindow(640, 480, engine.name, NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(engine.windowWidth, engine.windowHeight, engine.name, NULL, NULL);
     engine.window = window;
     glfwMakeContextCurrent(window);
     gladLoadGLES2(glfwGetProcAddress);
