@@ -14,6 +14,9 @@ int initEngine(){
     wrenReleaseHandle(engine.vm, callHandle);
     initWindow();
     gameLoop();
+}
+
+void quitEngine(){
     freeWindow();
 }
 

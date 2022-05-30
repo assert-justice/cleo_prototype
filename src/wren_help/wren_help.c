@@ -47,6 +47,14 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   {
     result.source = file_system_script;
   }
+  else if (strcmp(name, "input") == 0)
+  {
+    result.source = input_script;
+  }
+  else if (strcmp(name, "input_codes") == 0)
+  {
+    result.source = input_codes_script;
+  }
   else
   {
     result.source = NULL;

@@ -23,5 +23,6 @@ typedef struct {
 //
 // Starts wren vm, reads settings, and launches subsystems.
 int initEngine();
+void quitEngine();
 void gameLoop();
 #endif

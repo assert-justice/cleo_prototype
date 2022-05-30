@@ -63,6 +63,10 @@ void getSettingsHook(WrenVM* vm){
   mapSetValue(vm, "internalHeight");
 }
 
+void quitHook(WrenVM* vm){
+  quitEngine();
+}
+
 WrenForeignMethodFn bindEngine(
   const char* module,
   const char* className,
@@ -76,6 +80,9 @@ WrenForeignMethodFn bindEngine(
       }
       else if(strcmp(signature, "getSettings()") == 0 && isStatic){
         return getSettingsHook;
+      }
+      else if(strcmp(signature, "quit()") == 0 && isStatic){
+        return quitHook;
       }
     }
   }

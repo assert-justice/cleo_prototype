@@ -37,5 +37,6 @@ class Engine {
     foreign static privateSetSettings(settings)
     foreign static getSettings()
     // foreign static updateWindow()
+    foreign static quit()
 
 }

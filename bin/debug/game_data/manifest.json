@@ -1,0 +1,5 @@
+{
+    "main": "scripts/game.wren",
+    "inputs": "inputs.json",
+    "settings": "settings.json"
+}

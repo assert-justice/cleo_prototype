@@ -5,8 +5,11 @@ typedef struct {
     int keyCode;
     int state;
     int lastState;
-    int count;
+    int duration;
 } Button;
 
-
+typedef struct {
+    Button buttons[20];
+    int buttonCount;
+} Input;
 #endif
