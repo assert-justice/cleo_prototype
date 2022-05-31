@@ -7,7 +7,9 @@
 typedef struct {
     GLFWwindow* window;
     WrenVM* vm;
-    char* name;
+    WrenHandle* classHandle;
+    WrenHandle* updateHandle;
+    const char* name;
     int windowMode;
     int monitor;
     int windowWidth;
@@ -25,4 +27,5 @@ typedef struct {
 int initEngine();
 void quitEngine();
 void gameLoop();
+void initRoot(const char* rootSrc);
 #endif

@@ -1,9 +1,19 @@
 import "fs" for FileSystem
 import "json" for Json
 
-
 class Engine {
     static init(){
+        var folderName = "game_data"
+        var manifestPath = "%(folderName)/manifest.json"
+        if (!FileSystem.fileExists(manifestPath)){
+            Fiber.abort("no manifest found at '%(manifestPath)'")
+        }
+        var manifest = Json.parse(FileSystem.read(manifestPath))
+        // System.print(manifest)
+        __rootPath = "%(folderName)/%(manifest["main"])"
+        if (!FileSystem.fileExists(__rootPath)){
+            Fiber.abort("no main file found at '%(__rootPath)'")
+        }
         var defaultWindow = {
             "name": "Cleo",
             "windowMode": 0, // 0: windowed, 1: borderless fullscreen, 2: exclusive fullscreen
@@ -29,14 +39,21 @@ class Engine {
         }
         // set the state of the engine struct
         privateSetSettings(settings)
-        System.print(settings)
+        // System.print(settings)
         var newSettings = getSettings()
-        System.print(newSettings)
+        // System.print(newSettings)
     }
+    static launch(){
+        // System.print(__rootPath)
+        privateInitRoot(FileSystem.read(__rootPath))
+    }
+    static privateSetRoot(root){
+        __root = root
+    }
+    foreign static privateInitRoot(root)
     // foreign static privateInit(settings)
     foreign static privateSetSettings(settings)
     foreign static getSettings()
     // foreign static updateWindow()
     foreign static quit()
-
 }

@@ -1,5 +1,6 @@
 #include "file_io_bindings.h"
 #include "file_io.h"
+#include "string.h"
 
 void readFileHook(WrenVM* vm)
 {

@@ -39,7 +39,7 @@ extern Engine engine;
 // int main(int argc, char* argv[]){
 int main(){
     // WrenVM* vm = wrenHelpInit();
-    printf("hello\n");
+    // printf("hello\n");
     initEngine();
     return 0;
 }
