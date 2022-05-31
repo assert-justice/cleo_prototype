@@ -10,9 +10,9 @@ class Engine {
         }
         var manifest = Json.parse(FileSystem.read(manifestPath))
         // System.print(manifest)
-        __rootPath = "%(folderName)/%(manifest["main"])"
-        if (!FileSystem.fileExists(__rootPath)){
-            Fiber.abort("no main file found at '%(__rootPath)'")
+        var rootPath = "%(folderName)/%(manifest["main"])"
+        if (!FileSystem.fileExists(rootPath)){
+            Fiber.abort("no main file found at '%(rootPath)'")
         }
         var defaultWindow = {
             "name": "Cleo",
@@ -42,15 +42,16 @@ class Engine {
         // System.print(settings)
         var newSettings = getSettings()
         // System.print(newSettings)
+        return FileSystem.read(rootPath)
     }
-    static launch(){
-        // System.print(__rootPath)
-        privateInitRoot(FileSystem.read(__rootPath))
-    }
+    // static launch(){
+    //     // System.print(__rootPath)
+    //     privateInitRoot(FileSystem.read(__rootPath))
+    // }
     static privateSetRoot(root){
         __root = root
     }
-    foreign static privateInitRoot(root)
+    // foreign static privateInitRoot(root)
     // foreign static privateInit(settings)
     foreign static privateSetSettings(settings)
     foreign static getSettings()

@@ -20,13 +20,16 @@ int initEngine(){
     engine.classHandle = wrenGetSlotHandle(engine.vm, 0);
     // call init on engine class
     wrenCall(engine.vm, initHandle);
-    // we no longer need to init handle
+    // store the source to the root class
+    const char* rootSrc = wrenGetSlotString(engine.vm, 0);
+    // we no longer need the init handle
     wrenReleaseHandle(engine.vm, initHandle);
     initWindow();
-    wrenEnsureSlots(engine.vm, 1);
-    wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
-    wrenCall(engine.vm, launchHandle);
-    wrenReleaseHandle(engine.vm, launchHandle);
+    // wrenEnsureSlots(engine.vm, 1);
+    // wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
+    // wrenCall(engine.vm, launchHandle);
+    // wrenReleaseHandle(engine.vm, launchHandle);
+    initRoot(rootSrc);
     gameLoop();
 }
 
