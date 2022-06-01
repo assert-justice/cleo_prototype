@@ -35,6 +35,7 @@ int initWindow(){
     engine.window = window;
     glfwMakeContextCurrent(window);
     gladLoadGLES2(glfwGetProcAddress);
+    glfwSwapInterval(1);
     return 1;
 }
 

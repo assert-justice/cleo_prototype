@@ -39,7 +39,7 @@ class Input {
     foreign static getKey(code)
     static privatePollInputs(deltaTime){
         for (controller in __inputState) {
-            for (button in controller["buttons"].values()) {
+            for (button in controller["buttons"].values) {
                 // move the current state to the last state
                 button[1] = button[0]
                 button[0] = false
@@ -70,22 +70,22 @@ class Input {
     //         Fiber.abort("no button named '%(name)' has been configured")
     //     }
     // }
-    getButtonState(name, controllerIdx){
+    static getButtonState(name, controllerIdx){
         // validateButton(name)
-        return __inputState[controllerIdx]["buttons"]["name"]
+        return __inputState[controllerIdx]["buttons"][name]
     }
-    getButton(name, controllerIdx){
+    static getButton(name, controllerIdx){
         // return 0 if a button is not currently pressed
         // otherwise return the duration it has been pressed
         return getButtonState(name, controllerIdx)[0]
     }
-    getButtonPressed(name, controllerIdx){
+    static getButtonPressed(name, controllerIdx){
         // return true if a button was pressed this tick
         // false otherwise
         var state = getButtonState(name, controllerIdx)
         return state[0] && !state[1]
     }
-    getButtonReleased(name, controllerIdx){
+    static getButtonReleased(name, controllerIdx){
         // return true if a button was released this tick
         // false otherwise
         var state = getButtonState(name, controllerIdx)

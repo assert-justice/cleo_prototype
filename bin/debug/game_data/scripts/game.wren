@@ -4,12 +4,15 @@ import "input" for Input
 
 class Game is Node {
     update(deltaTime){
+        if(Input.getButtonPressed("cancel", 0)){
+            Engine.quit()
+        }
+        if(Input.getButtonPressed("special", 0)){
+            System.print("hello")
+        }
         // it's important to call the super method
         // typically after we have handled our own updates
         // that way if we change a child it will update accordingly *this* tick
-        if(Input.getButton("special")){
-            Engine.quit()
-        }
         super.update(deltaTime)
     }
     // static init(){

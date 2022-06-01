@@ -3,9 +3,12 @@
 #include "stdio.h"
 #include "string.h"
 #include "../wren_inc.h"
+#include "../engine/engine.h"
 #include "../file_io/file_io_bindings.h"
 #include "../engine/engine_bindings.h"
 #include "../input/input_bindings.h"
+
+extern Engine engine;
 
 void writeFn(WrenVM* vm, const char* text)
 {
@@ -30,6 +33,9 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
     {
       printf("[Runtime Error] %s\n", msg);
     } break;
+  }
+  if(engine.window){
+    quitEngine();
   }
 }
 

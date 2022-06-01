@@ -68,6 +68,10 @@ void gameLoop(){
         // Keep running
         glfwSwapBuffers(engine.window);
         glfwPollEvents();
+        wrenEnsureSlots(engine.vm, 2);
+        wrenSetSlotDouble(engine.vm, 1, 0.16);
+        wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
+        wrenCall(engine.vm, engine.updateHandle);
     }
     freeEngine();
 }

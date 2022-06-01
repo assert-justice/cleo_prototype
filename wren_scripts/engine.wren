@@ -46,6 +46,10 @@ class Engine {
         Input.privateInit()
         __root = root
     }
+    static update(deltaTime){
+        Input.privatePollInputs(deltaTime)
+        __root.update(deltaTime)
+    }
     foreign static privateSetSettings(settings)
     foreign static getSettings()
     // foreign static updateWindow()
