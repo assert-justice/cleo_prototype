@@ -3,6 +3,7 @@
 #include "../extern/glad/gles2.h"
 #include "GLFW/glfw3.h"
 #include "../wren_help/wren_help.h"
+#include "../input/input.h"
 
 typedef struct {
     GLFWwindow* window;

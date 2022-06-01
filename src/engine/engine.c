@@ -12,7 +12,7 @@ int initEngine(){
     engine.updateHandle = wrenMakeCallHandle(engine.vm, "update(_)");
     WrenHandle* initHandle = wrenMakeCallHandle(engine.vm, "init()");
     WrenHandle* launchHandle = wrenMakeCallHandle(engine.vm, "launch()");
-    // IMPORTANT: actually execute the script. Otherwise we crash
+    // actually execute the script. Otherwise we crash
     wrenInterpret(engine.vm, "engine", engine_script);
     // get the handle for the engine class
     wrenEnsureSlots(engine.vm, 1);
@@ -25,10 +25,6 @@ int initEngine(){
     // we no longer need the init handle
     wrenReleaseHandle(engine.vm, initHandle);
     initWindow();
-    // wrenEnsureSlots(engine.vm, 1);
-    // wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
-    // wrenCall(engine.vm, launchHandle);
-    // wrenReleaseHandle(engine.vm, launchHandle);
     initRoot(rootSrc);
     gameLoop();
 }

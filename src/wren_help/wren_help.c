@@ -5,6 +5,7 @@
 #include "../wren_inc.h"
 #include "../file_io/file_io_bindings.h"
 #include "../engine/engine_bindings.h"
+#include "../input/input_bindings.h"
 
 void writeFn(WrenVM* vm, const char* text)
 {
@@ -75,6 +76,7 @@ WrenForeignMethodFn bindForeignMethod(WrenVM* vm,
   WrenForeignMethodFn method;
   if ((method = bindFileIO(module, className, isStatic, signature))) return method;
   if ((method = bindEngine(module, className, isStatic, signature))) return method;  
+  if ((method = bindInput(module, className, isStatic, signature))) return method;  
   printf("Bind attempt failed\nmodule: '%s' match: %i\nclassName: '%s' match: %i\nsignature: '%s' match: %i\n", 
     module, strcmp(module, "fs"), className, strcmp(className, "FileSystem"), signature, strcmp(signature, "read(_)"));
   return NULL;

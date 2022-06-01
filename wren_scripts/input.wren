@@ -1,4 +1,4 @@
-import "input_codes" for keyToCode, codeToKey
+import "input_codes" for InputBindings
 
 class Input {
 
@@ -9,46 +9,86 @@ class Input {
             "cancel": "escape",
             "special": "space"
         }
-        __inputState = {}
+        __baseController = {
+            "buttons": []
+        }
+        __inputState = []
+        addController("none", "none", -1) // add aggregate controller
         for (item in bindings) {
-            privateAddButton(item.key, getKeyCode(item.value))
-            __inputState[item.key] = [0, 0, 0]
+            addButton(item.key)
+            addKeyToButton(item.key, getKeyCode(item.value), 0)
+        }
+        System.print(__inputState)
+    }
+    static addButton(name){
+        __baseController["buttons"].add(name)
+        for (controller in __inputState) {
+            controller["buttons"][name] = [0,0,0,[]]
         }
     }
-    // foreign static privatePollInputs()
-    // foreign static privateAddButton(name, code)
+    static addKeyToButton(buttonName, code, controllerIdx){
+        __inputState[controllerIdx]["buttons"][buttonName][3].add(code)
+        // controller["buttons"][buttonName] = code
+    }
+    static addController(bindings, type, joyIndex){
+        var controller = {
+            "buttons": {}
+        }
+        __inputState.add(controller)
+    }
+    foreign static getKey(code)
+    static privatePollInputs(deltaTime){
+        for (controller in __inputState) {
+            for (button in controller["buttons"].values()) {
+                // move the current state to the last state
+                button[1] = button[0]
+                button[0] = false
+                // aggregate the keys
+                for (code in button[3]) {
+                    button[0] = button[0] || getKey(code)
+                }
+                // update the duration
+                if (button[0] == button[1]){
+                    button[2] = button[2] + deltaTime
+                } else {
+                    button[2] = 0
+                }
+            }
+        }
+    }
+    // foreign static getMouseButton(code)
+    // foreign static getJoyButton(code)
+    // foreign static getJoyAxis(code)
     static getKeyCode(key){
-        if (!keyToCode.containsKey(key)) {
+        if (!InputBindings.keyToCode.containsKey(key)) {
             Fiber.abort("'%(key)' is not a valid key name")
         }
-        return keyToCode[key]
+        return InputBindings.keyToCode[key]
     }
-    validateButton(name){
-        if (!__inputState.containsKey(name)){
-            Fiber.abort("no button named '%(name)' has been configured")
-        }
+    // validateButton(name){
+    //     if (!__inputState.containsKey(name)){
+    //         Fiber.abort("no button named '%(name)' has been configured")
+    //     }
+    // }
+    getButtonState(name, controllerIdx){
+        // validateButton(name)
+        return __inputState[controllerIdx]["buttons"]["name"]
     }
-    getButtonState(name){
-        validateButton(name)
-        return __inputState[name]
-    }
-    getButton(name){
+    getButton(name, controllerIdx){
         // return 0 if a button is not currently pressed
         // otherwise return the duration it has been pressed
-        var state = getButtonState(name)
-        if (state[0]) return state[2]
-        return 0
+        return getButtonState(name, controllerIdx)[0]
     }
-    getButtonPressed(name){
+    getButtonPressed(name, controllerIdx){
         // return true if a button was pressed this tick
         // false otherwise
-        var state = getButtonState(name)
+        var state = getButtonState(name, controllerIdx)
         return state[0] && !state[1]
     }
-    getButtonReleased(name){
+    getButtonReleased(name, controllerIdx){
         // return true if a button was released this tick
         // false otherwise
-        var state = getButtonState(name)
+        var state = getButtonState(name, controllerIdx)
         return !state[0] && state[1]
     }
 }
