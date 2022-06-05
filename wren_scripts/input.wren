@@ -18,7 +18,7 @@ class Input {
             addButton(item.key)
             addKeyToButton(item.key, getKeyCode(item.value), 0)
         }
-        System.print(__inputState)
+        // System.print(__inputState)
     }
     static addButton(name){
         __baseController["buttons"].add(name)

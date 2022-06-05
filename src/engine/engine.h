@@ -4,19 +4,21 @@
 #include "GLFW/glfw3.h"
 #include "../wren_help/wren_help.h"
 #include "../input/input.h"
+#include "../window/window.h"
 
 typedef struct {
     GLFWwindow* window;
     WrenVM* vm;
     WrenHandle* classHandle;
     WrenHandle* updateHandle;
-    const char* name;
-    int windowMode;
-    int monitor;
-    int windowWidth;
-    int windowHeight;
-    int refreshRate;
-    bool vsync;
+    WindowStats windowStats;
+    // const char* title;
+    // int windowMode;
+    // int monitor;
+    // int windowWidth;
+    // int windowHeight;
+    // int refreshRate;
+    // bool vsync;
     int pixelMode;
     int internalWidth;
     int internalHeight;

@@ -10,8 +10,8 @@ int initEngine(){
     engine.vm = wrenHelpInit();
     // make call handles for engine methods
     engine.updateHandle = wrenMakeCallHandle(engine.vm, "update(_)");
-    WrenHandle* initHandle = wrenMakeCallHandle(engine.vm, "init()");
-    WrenHandle* launchHandle = wrenMakeCallHandle(engine.vm, "launch()");
+    WrenHandle* initHandle = wrenMakeCallHandle(engine.vm, "privateInit()");
+    // WrenHandle* launchHandle = wrenMakeCallHandle(engine.vm, "launch()");
     // actually execute the script. Otherwise we crash
     wrenInterpret(engine.vm, "engine", engine_script);
     // get the handle for the engine class
@@ -24,9 +24,10 @@ int initEngine(){
     const char* rootSrc = wrenGetSlotString(engine.vm, 0);
     // we no longer need the init handle
     wrenReleaseHandle(engine.vm, initHandle);
-    initWindow();
+    // initWindow();
     initRoot(rootSrc);
-    gameLoop();
+    // gameLoop();
+    return 1;
 }
 
 void quitEngine(){
@@ -52,7 +53,7 @@ void initRoot(const char* rootSrc){
     WrenHandle* rootHandle = wrenGetSlotHandle(engine.vm, 0);
     wrenReleaseHandle(engine.vm, constructorHandle);
     // get the handle to set the engine's root
-    WrenHandle* callHandle = wrenMakeCallHandle(engine.vm, "privateSetRoot(_)");
+    WrenHandle* callHandle = wrenMakeCallHandle(engine.vm, "privateReady(_)");
     wrenEnsureSlots(engine.vm, 2);
     // set the engine class to slot 0
     wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
@@ -60,6 +61,7 @@ void initRoot(const char* rootSrc){
     wrenSetSlotHandle(engine.vm, 1, rootHandle);
     wrenCall(engine.vm, callHandle);
     wrenReleaseHandle(engine.vm, callHandle);    
+    gameLoop();
 }
 
 void gameLoop(){
