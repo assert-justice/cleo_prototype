@@ -4,6 +4,8 @@
 #include "GLFW/glfw3.h"
 
 typedef struct {
+    unsigned int VAO;
+    unsigned int shaderProgram;
     int width;
     int height;
     int pixelMode;

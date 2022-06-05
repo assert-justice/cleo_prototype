@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include "../engine/engine.h"
 #include "stdio.h"
+#include "../shader_inc.h"
 
 extern Engine engine;
 
@@ -15,10 +16,78 @@ void setClearColor(float red, float green, float blue){
 
 void render(){
     glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(engine.renderer.shaderProgram);
+    glBindVertexArray(engine.renderer.VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void initRenderer(){
     glfwSetFramebufferSizeCallback(engine.window, framebufferCallback);
-    glViewport(0, 0, engine.windowStats.width, engine.windowStats.width);
-    // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glViewport(0, 0, engine.windowStats.width, engine.windowStats.height);
+    float vertices[] = {
+        0.5f, 0.5f, 0.0f, // top right
+        0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f,  0.5f, 0.0f, // top left
+
+        0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f,  0.5f, 0.0f, // top left
+        -0.5f, -0.5f, 0.0f, // bottom left
+    };
+    // tr, br, tl
+    // br, bl, tl
+    // init buffers
+    unsigned int VBO, VAO;
+    glGenBuffers(1, &VBO);
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // shader compilation
+    int  success;
+    char infoLog[512];
+    unsigned int vertexShader, fragmentShader, shaderProgram;
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const char *vertexShaderSource = "attribute vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "}\0";
+    // printf(simple_vert_script);
+    // printf("got here\n");
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if(!success){
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        printf("Shader compilation failed\n%s\n", infoLog);
+    }
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const char* fragmentShaderSource = "void main()\n"
+    "{\n"
+        "gl_FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\0";
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if(!success){
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        printf("Shader compilation failed\n%s\n", infoLog);
+    }
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if(!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        printf("Shader linking failed\n%s\n", infoLog);
+    }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    // bind vertex attributes
+    glUseProgram(shaderProgram);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    engine.renderer.VAO = VAO;
+    engine.renderer.shaderProgram = shaderProgram;
 }

@@ -7,42 +7,33 @@ def format_script(fname, text : str):
     chars = "{" + chars + "}"
     return f"static const char {fname}_script[] = {chars};"
 
-# def template(files):
-#     lines = 
-#     return "// Generated automatically from scripts in wren_scripts. Do not edit."
-
-def get_files():
+def get_files(dir, ext):
     out = []
-    for root, _, files in os.walk("wren_scripts"):
+    for root, _, files in os.walk(dir):
         for name in files:
             path = os.path.join(root, name)
-            name, ext = os.path.splitext(name)
-            if ext == ".wren":
+            name, f_ext = os.path.splitext(name)
+            if f_ext == f".{ext}":
                 out.append((path,name))
     return out
 
 # Build include files based on wren sourcecode
 
-def generate_includes():
-    # script_dir = os.path.join("wren_scripts")
-    include_dir = os.path.join("src","wren_inc.h")
+def generate_includes(script_dir, include_name : str, ext, ):
+    include_dir = os.path.join("src",f"{include_name}.h")
     lines = []
-    for path, name in get_files():
+    for path, name in get_files(script_dir, ext):
         with open(path) as src_file:
             lines.append(format_script(name, src_file.read()))
-    
     lines = "\n".join(lines)
     with open(include_dir, "w") as include_f:
         include_f.write(
-            f'''#ifndef WREN_INC
-#define WREN_INC
+            f'''#ifndef {include_name.upper()}
+#define {include_name.upper()}
 {lines}
 #endif
 ''')
-#             lines = []
-#             with open(path) as script_f:
-#                 lines.append(format_script(name, script_f.read()))
-#             print(len(lines))
 
 if __name__ == "__main__":
-    generate_includes()
+    generate_includes("wren_scripts", "wren_inc", "wren")
+    generate_includes("shaders", "shader_inc", "glsl")
