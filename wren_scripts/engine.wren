@@ -21,7 +21,7 @@ class Engine {
             "monitorIndex": 0,
             "width": 800,
             "height": 600,
-            "refreshRate": 0, // 0 indicates maximum availible
+            "refreshRate": 0,
             "vsync": true,
             // "pixelMode": 0, // 0: pixel perfect, 1: stretch width, 2: stretch height, 3: stretch both
             // "internalWidth": 400,
@@ -38,29 +38,16 @@ class Engine {
                 windowSettings[element.key] = element.value
             }
         }
-        // System.print("yo")
         Window.privateInit(windowSettings)
-        // set the state of the engine struct
-        // privateSetSettings(settings)
-        // var newSettings = getSettings()
         return FileSystem.read(rootPath)
-        // return {
-        //     "rootSrc": FileSystem.read(rootPath),
-        //     "windowSettings": windowSettings
-        // }
     }
     static privateReady(root){
         Input.privateInit()
         __root = root
-        // Engine.privateLaunch()
     }
     static update(deltaTime){
         Input.privatePollInputs(deltaTime)
         __root.update(deltaTime)
     }
-    // foreign static privateLaunch()
-    // foreign static privateSetSettings(settings)
-    // foreign static getSettings()
-    // foreign static updateWindow()
     foreign static quit()
 }

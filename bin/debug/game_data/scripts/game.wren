@@ -12,7 +12,7 @@ class Game is Node {
             // System.print("hello")
             // System.print()
             var stats = Window.getStats()
-            stats["width"] = 1200
+            // stats["fullScreen"] = true
             Window.setStats(stats)
         }
         // it's important to call the super method
@@ -20,9 +20,6 @@ class Game is Node {
         // that way if we change a child it will update accordingly *this* tick
         super.update(deltaTime)
     }
-    // static init(){
-    //     Fiber.abort("got here")
-    // }
     construct new(){
         super()
     }
