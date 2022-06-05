@@ -5,6 +5,7 @@
 #include "../wren_help/wren_help.h"
 #include "../input/input.h"
 #include "../window/window.h"
+#include "../renderer/renderer.h"
 
 typedef struct {
     GLFWwindow* window;
@@ -12,6 +13,7 @@ typedef struct {
     WrenHandle* classHandle;
     WrenHandle* updateHandle;
     WindowStats windowStats;
+    Renderer renderer;
     // const char* title;
     // int windowMode;
     // int monitor;
@@ -19,9 +21,9 @@ typedef struct {
     // int windowHeight;
     // int refreshRate;
     // bool vsync;
-    int pixelMode;
-    int internalWidth;
-    int internalHeight;
+    // int pixelMode;
+    // int internalWidth;
+    // int internalHeight;
 } Engine;
 
 // Initialize the engine. 

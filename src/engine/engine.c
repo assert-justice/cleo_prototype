@@ -68,6 +68,7 @@ void gameLoop(){
     while (!glfwWindowShouldClose(engine.window))
     {
         // Keep running
+        render();
         glfwSwapBuffers(engine.window);
         glfwPollEvents();
         wrenEnsureSlots(engine.vm, 2);

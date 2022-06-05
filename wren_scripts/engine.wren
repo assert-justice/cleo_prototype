@@ -2,6 +2,7 @@ import "fs" for FileSystem
 import "json" for Json
 import "input" for Input
 import "window" for Window
+import "renderer" for Renderer
 
 class Engine {
     static privateInit(){
@@ -39,6 +40,7 @@ class Engine {
             }
         }
         Window.privateInit(windowSettings)
+        Renderer.privateInit()
         return FileSystem.read(rootPath)
     }
     static privateReady(root){
