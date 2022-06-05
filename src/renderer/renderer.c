@@ -47,13 +47,7 @@ void initRenderer(){
     char infoLog[512];
     unsigned int vertexShader, fragmentShader, shaderProgram;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const char *vertexShaderSource = "attribute vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-    // printf(simple_vert_script);
-    // printf("got here\n");
+    const char* vertexShaderSource = (const char*) simple_vert_script; // stupid type conversion
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
@@ -62,10 +56,7 @@ void initRenderer(){
         printf("Shader compilation failed\n%s\n", infoLog);
     }
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* fragmentShaderSource = "void main()\n"
-    "{\n"
-        "gl_FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\0";
+    const char* fragmentShaderSource = (const char*) simple_frag_script;
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
