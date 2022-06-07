@@ -76,7 +76,7 @@ void packWindowStats(int mapSlot, int keySlot, int valueSlot, WindowStats stats)
 void windowInitHook(WrenVM* vm){
     // slot 0 has map
     // printf("howdy\n");
-    wrenEnsureSlots(engine.vm, 4);
+    wrenEnsureSlots(vm, 4);
     WindowStats stats = unpackWindowStats(1, 2, 3);
     initWindow(stats);
     // printf("doody\n");

@@ -6,6 +6,7 @@
 typedef struct {
     unsigned int VAO;
     unsigned int shaderProgram;
+    unsigned int atlasTexture;
     int width;
     int height;
     int pixelMode;

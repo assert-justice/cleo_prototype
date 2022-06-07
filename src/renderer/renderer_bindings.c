@@ -3,7 +3,8 @@
 #include "string.h"
 
 void initRendererHook(WrenVM* vm){
-    initRenderer();
+  wrenEnsureSlots(vm, 0);
+  initRenderer();
 }
 
 void setClearColorHook(WrenVM* vm){

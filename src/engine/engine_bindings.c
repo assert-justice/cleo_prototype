@@ -5,6 +5,7 @@
 extern Engine engine;
 
 void quitHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 0);
   quitEngine();
 }
 
