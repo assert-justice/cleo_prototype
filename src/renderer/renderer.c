@@ -4,6 +4,8 @@
 #include "../shader_inc.h"
 #include "../extern/stb_image/stb_image.h"
 #include "../extern/lodepng/lodepng.h"
+// #include "../extern/gb_math/gb_math.h"
+#include "../extern/cc_vector/ccVector.h"
 
 extern Engine engine;
 
@@ -17,6 +19,10 @@ void setClearColor(float red, float green, float blue){
 }
 
 void render(){
+    mat4x4 proj, view;
+    mat4x4Identity(proj);
+    unsigned int matLoc = glGetUniformLocation(engine.renderer.shaderProgram, "mat");
+    glProgramUniformMatrix4fv(engine.renderer.shaderProgram, matLoc, 1, GL_FALSE, (const GLfloat*)&proj);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(engine.renderer.shaderProgram);
     glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
