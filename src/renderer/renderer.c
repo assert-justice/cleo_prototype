@@ -19,10 +19,21 @@ void setClearColor(float red, float green, float blue){
 }
 
 void render(){
-    mat4x4 proj, view;
-    mat4x4Identity(proj);
-    unsigned int matLoc = glGetUniformLocation(engine.renderer.shaderProgram, "mat");
-    glProgramUniformMatrix4fv(engine.renderer.shaderProgram, matLoc, 1, GL_FALSE, (const GLfloat*)&proj);
+    mat4x4 proj, view, temp;
+    // mat4x4Identity(proj);
+    // proj = glOrtho(0.0f, engine.windowStats.height, 0.0f, engine.windowStats.width, 0.1f, 100.0f);
+    mat4x4Perspective(proj, 1.5, 1.0f, 0.1f, 100.0f);
+    // mat4x4Orthographic(proj, 0.0f, engine.windowStats.height, 0.0f, engine.windowStats.width, -0.1f, 100.0f);
+    mat4x4Identity(view);
+    mat4x4Translate(view, vec3New(0.0f, 0.0f, -3.0f));
+    mat4x4MultiplyMatrix(temp, view, proj);
+    vec4 zero = vec4New(0.5f, 0.5f, 0.0f, 1.0f);
+    zero = mat4x4MultiplyVector(temp, zero);
+    printf("x: %f, y: %f, z: %f, w: %f\n", zero.x, zero.y, zero.z, zero.w);
+    unsigned int projLoc = glGetUniformLocation(engine.renderer.shaderProgram, "proj");
+    glProgramUniformMatrix4fv(engine.renderer.shaderProgram, projLoc, 1, GL_FALSE, (const GLfloat*)&proj);
+    unsigned int viewLoc = glGetUniformLocation(engine.renderer.shaderProgram, "view");
+    glProgramUniformMatrix4fv(engine.renderer.shaderProgram, viewLoc, 1, GL_FALSE, (const GLfloat*)&proj);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(engine.renderer.shaderProgram);
     glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);

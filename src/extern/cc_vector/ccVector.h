@@ -121,6 +121,7 @@ typedef float ccvType;
 #define CCV_FUNC_MAT_SCALE_2D(dim)        CAT2(CCV_MAT_TYPENAME(dim), Scale2D)
 #define CCV_FUNC_MAT_INVERSE(dim)         CAT2(CCV_MAT_TYPENAME(dim), Inverse)
 #define CCV_FUNC_MAT_PERSPECTIVE(dim)     CAT2(CCV_MAT_TYPENAME(dim), Perspective)
+#define CCV_FUNC_MAT_ORTHOGRAPHIC(dim)    CAT2(CCV_MAT_TYPENAME(dim), Orthographic)
 #define CCV_FUNC_MAT_LOOK_AT(dim)         CAT2(CCV_MAT_TYPENAME(dim), LookAt)
 #define CCV_FUNC_MAT_EQUAL(dim)           CAT2(CCV_MAT_TYPENAME(dim), Equal)
 
@@ -900,6 +901,86 @@ static inline void CCV_FUNC_MAT_PERSPECTIVE(4)(CCV_MAT_TYPENAME(4) m, ccvType an
 	m[3][2] = -((2 * zFar * zNear) / (zFar - zNear));
 	m[3][3] = 0;
 }
+
+static inline void CCV_FUNC_MAT_ORTHOGRAPHIC(4)(CCV_MAT_TYPENAME(4) m, ccvType left, ccvType right, ccvType top, ccvType bottom, ccvType near, ccvType far)
+{
+	// ccvType a = CCV_TAN(angle * (ccvType)0.5);
+
+// #ifdef _DEBUG
+// 	assert(aspect != 0);
+// 	assert(a != 0);
+// #endif
+
+	// a = 1 / a;
+
+	// m[0][0] = a / aspect;
+	// m[0][1] = 0;
+	// m[0][2] = 0;
+	// m[0][3] = 0;
+
+	// m[1][0] = 0;
+	// m[1][1] = a;
+	// m[1][2] = 0;
+	// m[1][3] = 0;
+
+	// m[2][0] = 0;
+	// m[2][1] = 0;
+	// m[2][2] = -((zFar + zNear) / (zFar - zNear));
+	// m[2][3] = -1;
+
+	// m[3][0] = 0;
+	// m[3][1] = 0;
+	// m[3][2] = -((2 * zFar * zNear) / (zFar - zNear));
+	// m[3][3] = 0;
+
+	m[0][0] = 2 / (right - left); 
+    m[0][1] = 0; 
+    m[0][2] = 0; 
+    m[0][3] = 0; 
+ 
+    m[1][0] = 0; 
+    m[1][1] = 2 / (top - bottom); 
+    m[1][2] = 0; 
+    m[1][3] = 0; 
+ 
+    m[2][0] = 0; 
+    m[2][1] = 0; 
+    m[2][2] = -2 / (far - near); 
+    m[2][3] = 0; 
+ 
+    m[3][0] = -(right + left) / (right - left); 
+    m[3][1] = -(top + bottom) / (top - bottom); 
+    m[3][2] = -(far + near) / (far - near); 
+    m[3][3] = 1; 
+
+}
+
+// float[4][4] glOrtho( 
+//     const float b, const float t, const float l, const float r, 
+//     const float n, const float f) 
+// { 
+// 	float[4][4] M;
+//     // set OpenGL perspective projection matrix
+//     M[0][0] = 2 / (r - l); 
+//     M[0][1] = 0; 
+//     M[0][2] = 0; 
+//     M[0][3] = 0; 
+ 
+//     M[1][0] = 0; 
+//     M[1][1] = 2 / (t - b); 
+//     M[1][2] = 0; 
+//     M[1][3] = 0; 
+ 
+//     M[2][0] = 0; 
+//     M[2][1] = 0; 
+//     M[2][2] = -2 / (f - n); 
+//     M[2][3] = 0; 
+ 
+//     M[3][0] = -(r + l) / (r - l); 
+//     M[3][1] = -(t + b) / (t - b); 
+//     M[3][2] = -(f + n) / (f - n); 
+//     M[3][3] = 1; 
+// }
 
 // Modelview matrix
 
