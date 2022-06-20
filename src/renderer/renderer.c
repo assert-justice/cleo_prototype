@@ -53,60 +53,63 @@ void render(){
     mat4x4 proj, view, temp;
     unsigned int projLoc;
     // mat4x4Identity(proj);
-    // mat4x4Orthographic(proj, 0.0f, engine.windowStats.width, engine.windowStats.height, 0.0f, 0.1f, 100.0f);
-    // mat4x4Identity(view);
-    // mat4x4Scale(view, ATLAS_WIDTH);
-    // mat4x4Translate(view, vec3New(0.0f, 0.0f, -3.0f));
-    // projLoc = glGetUniformLocation(engine.renderer.shaderProgram, "proj");
-    // glProgramUniformMatrix4fv(engine.renderer.shaderProgram, projLoc, 1, GL_FALSE, (const GLfloat*)&proj);
+    mat4x4Orthographic(proj, 0.0f, engine.windowStats.width, engine.windowStats.height, 0.0f, 0.1f, 100.0f);
+    mat4x4Identity(view);
+    mat4x4Scale(view, vec3New(ATLAS_WIDTH,
+        ATLAS_WIDTH, 1.0f));
+    mat4x4Translate(view, vec3New(0.0f, 0.0f, -3.0f));
+    mat4x4MultiplyMatrix(temp, view, proj);
+    projLoc = glGetUniformLocation(engine.renderer.shaderProgram, "proj");
+    glProgramUniformMatrix4fv(engine.renderer.shaderProgram, projLoc, 1, GL_FALSE, (const GLfloat*)&temp);
     // unsigned int viewLoc = glGetUniformLocation(engine.renderer.shaderProgram, "view");
     // glProgramUniformMatrix4fv(engine.renderer.shaderProgram, viewLoc, 1, GL_FALSE, (const GLfloat*)&view);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // glUseProgram(engine.renderer.shaderProgram);
-    // glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
-    // glBindVertexArray(engine.renderer.VAO);
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // glUseProgram(engine.renderer.shaderProgram);
-    // glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
-    // glBindVertexArray(engine.renderer.VAO);
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
-    // draw sprites
-    glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.renderBuffer);
-    mat4x4Orthographic(proj, 0.0f, engine.windowStats.width, engine.windowStats.height, 0.0f, -100.0f, 100.0f);
-    projLoc = glGetUniformLocation(engine.renderer.spriteShader, "proj");
-    glProgramUniformMatrix4fv(engine.renderer.spriteShader, projLoc, 1, GL_FALSE, (const GLfloat*)&proj);
-    glProgramUniformMatrix4fv(
-        engine.renderer.spriteShader, 
-        glGetUniformLocation(engine.renderer.spriteShader, "matrix"), 
-        1, GL_FALSE, (const GLfloat*)&engine.renderer.sprites[0].matrix);
-    glProgramUniform4fv(engine.renderer.spriteShader,
-        glGetUniformLocation(engine.renderer.spriteShader, "dimensions"),
-        1, (const GLfloat*)&engine.renderer.sprites[0].dimensions      
-        );
-    glUseProgram(engine.renderer.spriteShader);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(engine.renderer.shaderProgram);
     glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
     glBindVertexArray(engine.renderer.VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(engine.renderer.shaderProgram);
+    glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
+    glBindVertexArray(engine.renderer.VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    // draw sprites
+    // glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.renderBuffer);
+    // mat4x4Orthographic(proj, 0.0f, engine.windowStats.width, engine.windowStats.height, 0.0f, -100.0f, 100.0f);
+    // projLoc = glGetUniformLocation(engine.renderer.spriteShader, "proj");
+    // glProgramUniformMatrix4fv(engine.renderer.spriteShader, projLoc, 1, GL_FALSE, (const GLfloat*)&proj);
+    // glProgramUniformMatrix4fv(
+    //     engine.renderer.spriteShader, 
+    //     glGetUniformLocation(engine.renderer.spriteShader, "matrix"), 
+    //     1, GL_FALSE, (const GLfloat*)&engine.renderer.sprites[0].matrix);
+    // glProgramUniform4fv(engine.renderer.spriteShader,
+    //     glGetUniformLocation(engine.renderer.spriteShader, "dimensions"),
+    //     1, (const GLfloat*)&engine.renderer.sprites[0].dimensions      
+    //     );
+    // glUseProgram(engine.renderer.spriteShader);
+    // glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
+    // glBindVertexArray(engine.renderer.VAO);
+    // glDrawArrays(GL_TRIANGLES, 0, 6);
     // unsigned int viewLoc = glGetUniformLocation(engine.renderer.spriteShader, "view");
     // glProgramUniformMatrix4fv(engine.renderer.spriteShader, viewLoc, 1, GL_FALSE, (const GLfloat*)&view);
     // draw render texture
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    mat4x4Identity(proj);
-    mat4x4Orthographic(proj, 0.0f, engine.windowStats.width, engine.windowStats.height, 0.0f, -100.0f, 100.0f);
-    mat4x4Identity(view);
-    mat4x4Scale(view, engine.windowStats.width);
-    mat4x4MultiplyMatrix(temp, view, proj);
-    mat4x4Identity(view);
-    glProgramUniformMatrix4fv(
-        engine.renderer.shaderProgram, 
-        glGetUniformLocation(engine.renderer.shaderProgram, "proj"), 
-        1, GL_FALSE, (const GLfloat*)&temp);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(engine.renderer.shaderProgram);
-    glBindTexture(GL_TEXTURE_2D, engine.renderer.renderTexture);
-    glBindVertexArray(engine.renderer.VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    // mat4x4Identity(proj);
+    // mat4x4Orthographic(proj, 0.0f, engine.windowStats.width, engine.windowStats.height, 0.0f, -100.0f, 100.0f);
+    // mat4x4Identity(view);
+    // mat4x4Scale(view, vec3New(engine.windowStats.width,
+    //     engine.windowStats.height, 1.0f));
+    // mat4x4MultiplyMatrix(temp, view, proj);
+    // mat4x4Identity(view);
+    // glProgramUniformMatrix4fv(
+    //     engine.renderer.shaderProgram, 
+    //     glGetUniformLocation(engine.renderer.shaderProgram, "proj"), 
+    //     1, GL_FALSE, (const GLfloat*)&temp);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // glUseProgram(engine.renderer.shaderProgram);
+    // glBindTexture(GL_TEXTURE_2D, engine.renderer.renderTexture);
+    // glBindVertexArray(engine.renderer.VAO);
+    // glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void initRenderer(){
@@ -170,7 +173,7 @@ void initRenderer(){
     engine.renderer.renderBuffer = renderBuffer;
     engine.renderer.numSprites = 1;
     mat4x4Identity(engine.renderer.sprites[0].matrix);
-    mat4x4Scale(engine.renderer.sprites[0].matrix, 30);
+    mat4x4Scale(engine.renderer.sprites[0].matrix, vec3New(30.0f, 30.0f, 0.0f));
     // mat4x4Translate(engine.renderer.sprites[0].matrix, vec3New(100.0f, 0.0f, 0.0f));
     engine.renderer.sprites[0].dimensions = vec4New(0.03f, 0.0f, 0.03f, 0.03f);
     blitFileToAtlas("game_data/sprites/characters_packed.png",0,0);
@@ -202,7 +205,7 @@ void blitFileToAtlas(const char* fname, int xOffset_x, int yOffset){
     mat4x4 proj, view, temp;
     mat4x4Orthographic(proj, 0, ATLAS_WIDTH, ATLAS_WIDTH, 0, -100.0f, 100.0f);
     mat4x4Identity(view);
-    mat4x4Scale(view, width);
+    mat4x4Scale(view, vec3New(width, height, 1.0f));
     mat4x4MultiplyMatrix(temp, view, proj);
     glProgramUniformMatrix4fv(
         engine.renderer.shaderProgram, 

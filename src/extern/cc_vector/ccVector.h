@@ -777,15 +777,27 @@ static inline void CCV_FUNC_MAT_SET_SCALE(3)(CCV_MAT_TYPENAME(3) m, const ccvTyp
 
 static inline void CCV_FUNC_MAT_SCALE(3)(CCV_MAT_TYPENAME(3) m, const ccvType scale) CCV_APPLY_MATRIX(3, CCV_FUNC_MAT_SET_SCALE(3)(multiply, scale))
 
-static inline void CCV_FUNC_MAT_SET_SCALE(4)(CCV_MAT_TYPENAME(4) m, const ccvType scale)
+// static inline void CCV_FUNC_MAT_SET_SCALE(4)(CCV_MAT_TYPENAME(4) m, const ccvType scale)
+// {
+// 	CCV_FUNC_MAT_ZERO(4)(m);
+	
+// 	m[3][3] = 1;
+// 	m[0][0] = m[1][1] = m[2][2] = scale;
+// }
+
+// static inline void CCV_FUNC_MAT_SCALE(4)(CCV_MAT_TYPENAME(4) m, CCV_VEC_TYPENAME(3) scale) CCV_APPLY_MATRIX(4, CCV_FUNC_MAT_SET_SCALE(4)(multiply, scale))
+
+static inline void CCV_FUNC_MAT_SET_SCALE(4)(CCV_MAT_TYPENAME(4) m, CCV_VEC_TYPENAME(3) scale)
 {
 	CCV_FUNC_MAT_ZERO(4)(m);
 	
 	m[3][3] = 1;
-	m[0][0] = m[1][1] = m[2][2] = scale;
+	m[0][0] = scale.x;
+	m[1][1] = scale.y;
+	m[2][2] = scale.z;
 }
 
-static inline void CCV_FUNC_MAT_SCALE(4)(CCV_MAT_TYPENAME(4) m, const ccvType scale) CCV_APPLY_MATRIX(4, CCV_FUNC_MAT_SET_SCALE(4)(multiply, scale))
+static inline void CCV_FUNC_MAT_SCALE(4)(CCV_MAT_TYPENAME(4) m, CCV_VEC_TYPENAME(3) scale) CCV_APPLY_MATRIX(4, CCV_FUNC_MAT_SET_SCALE(4)(multiply, scale))
 
 // Inverse matrix
 
