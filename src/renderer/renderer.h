@@ -3,6 +3,7 @@
 #include "../extern/glad/gles2.h"
 #include "GLFW/glfw3.h"
 #include "../extern/cc_vector/ccVector.h"
+#define MAX_SPRITES 16
 
 typedef struct Sprite {
     mat4x4 matrix;
@@ -27,7 +28,7 @@ typedef struct {
     float clearR;
     float clearG;
     float clearB;
-    Sprite sprites[10];
+    Sprite sprites[MAX_SPRITES];
     int numSprites;
 } Renderer;
 
