@@ -50,7 +50,7 @@ void render(){
     glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.renderBuffer);
     glUseProgram(engine.renderer.spriteShader);
     glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
-    glClear(GL_COLOR_BUFFER_BIT);
+    // glClear(GL_COLOR_BUFFER_BIT);
     glBindVertexArray(engine.renderer.VAO);
     mat4x4Orthographic(proj, 0.0f, 
         engine.windowStats.width,
@@ -152,7 +152,7 @@ void initRenderer(int rendererWidth, int rendererHeight){
     unsigned int renderTexture;
     glGenTextures(1, &renderTexture);
     glBindTexture(GL_TEXTURE_2D, renderTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, engine.renderer.width, engine.renderer.width, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, engine.renderer.width, engine.renderer.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0);
@@ -200,7 +200,11 @@ void blitFileToAtlas(const char* fname, int xOffset, int yOffset){
     }
     stbi_image_free(data);
     mat4x4 proj, view, temp;
-    mat4x4Orthographic(proj, 0, engine.windowStats.width, engine.windowStats.height, 0, -100.0f, 100.0f);
+    mat4x4Orthographic(proj, 0.0f, 
+        engine.windowStats.width, 
+        engine.windowStats.height, 
+        0.0f, 
+        -100.0f, 100.0f);
     mat4x4Identity(view);
     mat4x4Scale(view, vec3New(width, height, 1.0f));
     mat4x4Translate(view, vec3New(xOffset, yOffset, 0.0));

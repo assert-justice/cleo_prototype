@@ -3,8 +3,14 @@
 #include "string.h"
 
 void initRendererHook(WrenVM* vm){
-  wrenEnsureSlots(vm, 0);
-  initRenderer(100, 100);
+  wrenEnsureSlots(vm, 4);
+  wrenSetSlotString(vm, 2, "width");
+  wrenGetMapValue(vm, 1, 2, 3);
+  int width = (int)wrenGetSlotDouble(vm, 3);
+  wrenSetSlotString(vm, 2, "height");
+  wrenGetMapValue(vm, 1, 2, 3);
+  int height = (int)wrenGetSlotDouble(vm, 3);
+  initRenderer(width, height);
 }
 
 void setClearColorHook(WrenVM* vm){
@@ -23,7 +29,7 @@ WrenForeignMethodFn bindRenderer(
 {
   if (strcmp(module, "renderer") == 0){
     if (strcmp(className, "Renderer") == 0){
-      if(strcmp(signature, "privateInit()") == 0 && isStatic){
+      if(strcmp(signature, "privateInit(_)") == 0 && isStatic){
         return initRendererHook;
       }
       else if(strcmp(signature, "setClearColor(_,_,_)") == 0 && isStatic){
