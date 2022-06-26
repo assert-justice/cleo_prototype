@@ -15,7 +15,9 @@ class Game is Node {
             // var stats = Window.getStats()
             // stats["fullScreen"] = true
             // Window.setStats(stats)
-            Renderer.setClearColor(0.2, 0.3, 0.3)
+            // Renderer.setClearColor(0.2, 0.3, 0.3)
+            var val = Renderer.addSprite()
+            System.print(val)
         }
         // it's important to call the super method
         // typically after we have handled our own updates

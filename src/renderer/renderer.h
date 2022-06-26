@@ -38,5 +38,5 @@ void render();
 void setClearColor(float red, float green, float blue);
 void blitFileToAtlas(const char* fname, int xOffset_x, int yOffset);
 unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderSrc);
-
+int addSprite();
 #endif

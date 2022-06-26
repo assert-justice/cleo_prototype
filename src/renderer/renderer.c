@@ -163,7 +163,7 @@ void initRenderer(int rendererWidth, int rendererHeight){
     engine.renderer.renderTexture = renderTexture;
     engine.renderer.renderBuffer = renderBuffer;
 
-    engine.renderer.numSprites = 2;
+    // engine.renderer.numSprites = 2;
     mat4x4Identity(engine.renderer.sprites[0].matrix);
     mat4x4Scale(engine.renderer.sprites[0].matrix, vec3New(24.0f, 24.0f, 0.0f));
     float cell = 24.0f / ATLAS_WIDTH;
@@ -259,4 +259,13 @@ unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderS
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     return shaderProgram;
+}
+
+int addSprite(){
+    int val = -1;
+    if (engine.renderer.numSprites < MAX_SPRITES){
+        val = engine.renderer.numSprites;
+        engine.renderer.numSprites++;
+    }
+    return val;
 }

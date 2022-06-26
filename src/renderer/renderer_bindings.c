@@ -21,6 +21,12 @@ void setClearColorHook(WrenVM* vm){
     setClearColor(red, green, blue);
 }
 
+void addSpriteHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 1);
+  int val = addSprite();
+  wrenSetSlotDouble(vm, 0, (double)val);
+}
+
 WrenForeignMethodFn bindRenderer(
   const char* module,
   const char* className,
@@ -34,6 +40,9 @@ WrenForeignMethodFn bindRenderer(
       }
       else if(strcmp(signature, "setClearColor(_,_,_)") == 0 && isStatic){
         return setClearColorHook;
+      }
+      else if(strcmp(signature, "addSprite()") == 0 && isStatic){
+        return addSpriteHook;
       }
     }
   }
