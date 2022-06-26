@@ -4,7 +4,7 @@
 
 void initRendererHook(WrenVM* vm){
   wrenEnsureSlots(vm, 0);
-  initRenderer();
+  initRenderer(100, 100);
 }
 
 void setClearColorHook(WrenVM* vm){

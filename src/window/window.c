@@ -7,6 +7,7 @@ extern Engine engine;
 void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
+    error = error;
 }
 
 GLFWmonitor* getMonitor(int monitorIndex){
@@ -21,7 +22,7 @@ GLFWmonitor* getMonitor(int monitorIndex){
 void setWindowStats(WindowStats stats){
     engine.windowStats = stats;
     GLFWmonitor* monitor = getMonitor(stats.monitorIndex);
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    // const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     if (!stats.fullScreen){ // if we want a window
         monitor = NULL;
     }

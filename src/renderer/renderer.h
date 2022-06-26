@@ -32,7 +32,7 @@ typedef struct {
     int numSprites;
 } Renderer;
 
-void initRenderer();
+void initRenderer(int rendererWidth, int rendererHeight);
 void freeRenderer();
 void render();
 void setClearColor(float red, float green, float blue);

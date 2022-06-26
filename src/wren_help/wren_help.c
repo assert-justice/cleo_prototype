@@ -14,6 +14,7 @@ extern Engine engine;
 
 void writeFn(WrenVM* vm, const char* text)
 {
+  vm = vm;
   printf("%s", text);
 }
 
@@ -36,6 +37,7 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
       printf("[Runtime Error] %s\n", msg);
     } break;
   }
+  vm = vm;
   // if(engine.window){
   //   quitEngine();
   // }
@@ -80,6 +82,7 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   {
     result.source = NULL;
   }
+  vm = vm;
   return result;
 }
 
@@ -95,6 +98,7 @@ WrenForeignMethodFn bindForeignMethod(WrenVM* vm,
   if ((method = bindInput(module, className, isStatic, signature))) return method;  
   if ((method = bindWindow(module, className, isStatic, signature))) return method;  
   if ((method = bindRenderer(module, className, isStatic, signature))) return method;  
+  vm = vm;
   printf("Bind attempt failed\nmodule: '%s' match: %i\nclassName: '%s' match: %i\nsignature: '%s' match: %i\n", 
     module, strcmp(module, "fs"), className, strcmp(className, "FileSystem"), signature, strcmp(signature, "read(_)"));
   return NULL;

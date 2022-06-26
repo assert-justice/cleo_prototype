@@ -30,6 +30,7 @@ const float quad[] = {
 };
 void framebufferCallback(GLFWwindow* window, int width, int height)
 {
+    window = window;
     glViewport(0, 0, width, height);
     engine.windowStats.width = width;
     engine.windowStats.height = height;
@@ -59,7 +60,7 @@ void render(){
     projLoc = glGetUniformLocation(engine.renderer.spriteShader, "proj");
     matLoc = glGetUniformLocation(engine.renderer.spriteShader, "matrix");
     dimLoc = glGetUniformLocation(engine.renderer.spriteShader, "dimensions");
-    for (size_t i = 0; i < engine.renderer.numSprites; i++)
+    for (int i = 0; i < engine.renderer.numSprites; i++)
     {
         glProgramUniformMatrix4fv(
             engine.renderer.spriteShader, 
@@ -102,11 +103,11 @@ void render(){
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void initRenderer(){
+void initRenderer(int rendererWidth, int rendererHeight){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    engine.renderer.width = 100;
-    engine.renderer.height = 100;
+    engine.renderer.width = rendererWidth;
+    engine.renderer.height = rendererHeight;
     glfwSetFramebufferSizeCallback(engine.window, framebufferCallback);
     glViewport(0, 0, engine.windowStats.width, engine.windowStats.height);
     // tr, br, tl
@@ -177,17 +178,17 @@ void initRenderer(){
 
 void freeRenderer(){
     glDeleteProgram(engine.renderer.shaderProgram);
-    glDeleteFramebuffers(1, engine.renderer.atlasBuffer);
-    glDeleteTextures(1, engine.renderer.atlasTexture);
+    glDeleteFramebuffers(1, &engine.renderer.atlasBuffer);
+    glDeleteTextures(1, &engine.renderer.atlasTexture);
 }
 
-void blitFileToAtlas(const char* fname, int xOffset_x, int yOffset){
+void blitFileToAtlas(const char* fname, int xOffset, int yOffset){
     glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.atlasBuffer);
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     int width, height, numChannels;
-    stbi_set_flip_vertically_on_load(1);
+    // stbi_set_flip_vertically_on_load(1);
     unsigned char* data = stbi_load(fname, &width, &height, &numChannels, 0);
     if(data){
         // printf("%i %i %i %i\n", data[0], data[1], data[2], data[3]);
@@ -202,6 +203,7 @@ void blitFileToAtlas(const char* fname, int xOffset_x, int yOffset){
     mat4x4Orthographic(proj, 0, engine.windowStats.width, engine.windowStats.height, 0, -100.0f, 100.0f);
     mat4x4Identity(view);
     mat4x4Scale(view, vec3New(width, height, 1.0f));
+    mat4x4Translate(view, vec3New(xOffset, yOffset, 0.0));
     mat4x4MultiplyMatrix(temp, view, proj);
     glProgramUniformMatrix4fv(
         engine.renderer.shaderProgram, 
