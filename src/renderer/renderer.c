@@ -50,7 +50,7 @@ void render(){
     glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.renderBuffer);
     glUseProgram(engine.renderer.spriteShader);
     glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
-    // glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     glBindVertexArray(engine.renderer.VAO);
     mat4x4Orthographic(proj, 0.0f, 
         engine.windowStats.width,
@@ -268,4 +268,26 @@ int addSprite(){
         engine.renderer.numSprites++;
     }
     return val;
+}
+
+int getNumSprites(){
+    return engine.renderer.numSprites;
+}
+int getMaxSprites(){
+    return MAX_SPRITES;
+}
+void setSpriteDimensions(int idx, double xOffset, double yOffset, double width, double height){
+    if (idx < 0 || idx >= engine.renderer.numSprites) return;
+    engine.renderer.sprites[idx].dimensions = vec4New(
+        xOffset / ATLAS_WIDTH, 
+        yOffset / ATLAS_WIDTH, 
+        width / ATLAS_WIDTH, 
+        height / ATLAS_WIDTH);
+}
+void setSpriteTransform(int idx, vec3 position, vec3 scale, double angle){
+    if (idx < 0 || idx >= engine.renderer.numSprites) return;
+    mat4x4Identity(engine.renderer.sprites[idx].matrix);
+    mat4x4Scale(engine.renderer.sprites[idx].matrix, scale);
+    mat4x4Translate(engine.renderer.sprites[idx].matrix, position);
+    mat4x4RotateZ(engine.renderer.sprites[idx].matrix, angle);
 }

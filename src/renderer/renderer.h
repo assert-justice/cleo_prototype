@@ -39,4 +39,8 @@ void setClearColor(float red, float green, float blue);
 void blitFileToAtlas(const char* fname, int xOffset_x, int yOffset);
 unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderSrc);
 int addSprite();
+int getNumSprites();
+int getMaxSprites();
+void setSpriteDimensions(int idx, double xOffset, double yOffset, double width, double height);
+void setSpriteTransform(int idx, vec3 position, vec3 scale, double angle);
 #endif

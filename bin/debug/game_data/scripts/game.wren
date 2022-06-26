@@ -16,8 +16,9 @@ class Game is Node {
             // stats["fullScreen"] = true
             // Window.setStats(stats)
             // Renderer.setClearColor(0.2, 0.3, 0.3)
-            var val = Renderer.addSprite()
-            System.print(val)
+            // var val = Renderer.addSprite()
+            // System.print(val)
+            setFrame(_frame + 1)
         }
         // it's important to call the super method
         // typically after we have handled our own updates
@@ -26,5 +27,12 @@ class Game is Node {
     }
     construct new(){
         super()
+        Renderer.addSprite()
+        setFrame(0)
+    }
+    setFrame(frame){
+        _frame = frame
+        Renderer.setSpriteDimensions(0, 24 * _frame, 0, 24, 24)
+        Renderer.setSpriteTransform(0, _frame * 8, 0, 0, 24, 24, 0)
     }
 }
