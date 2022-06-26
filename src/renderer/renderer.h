@@ -8,10 +8,6 @@
 typedef struct Sprite {
     mat4x4 matrix;
     vec4 dimensions;
-    // int xOffset;
-    // int yOffset;
-    // int width;
-    // int height;
 } Sprite;
 
 typedef struct {
@@ -36,7 +32,7 @@ void initRenderer(int rendererWidth, int rendererHeight);
 void freeRenderer();
 void render();
 void setClearColor(float red, float green, float blue);
-void blitFileToAtlas(const char* fname, int xOffset_x, int yOffset);
+int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* width, int* height);
 unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderSrc);
 int addSprite();
 int getNumSprites();

@@ -29,10 +29,11 @@ class Game is Node {
         super()
         Renderer.addSprite()
         setFrame(0)
+        Renderer.blitFileToAtlas("game_data/sprites/characters_packed.png", 0, 24)
     }
     setFrame(frame){
         _frame = frame
-        Renderer.setSpriteDimensions(0, 24 * _frame, 0, 24, 24)
+        Renderer.setSpriteDimensions(0, 24 * _frame, 24, 24, 24)
         Renderer.setSpriteTransform(0, _frame * 8, 0, 0, 24, 24, 0)
     }
 }

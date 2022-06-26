@@ -173,7 +173,8 @@ void initRenderer(int rendererWidth, int rendererHeight){
     mat4x4Scale(engine.renderer.sprites[1].matrix, vec3New(24.0f, 24.0f, 0.0f));
     mat4x4Translate(engine.renderer.sprites[1].matrix, vec3New(24.0f, 0.0f, 0.0f));
     engine.renderer.sprites[1].dimensions = vec4New(cell, cell, cell, cell);
-    blitFileToAtlas("game_data/sprites/characters_packed.png",0,0);
+    // int width, height;
+    // blitFileToAtlas("game_data/sprites/characters_packed.png",0,0,&width,&height);
 }
 
 void freeRenderer(){
@@ -182,21 +183,22 @@ void freeRenderer(){
     glDeleteTextures(1, &engine.renderer.atlasTexture);
 }
 
-void blitFileToAtlas(const char* fname, int xOffset, int yOffset){
+int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* width, int* height){
     glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.atlasBuffer);
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    int width, height, numChannels;
+    int numChannels;
     // stbi_set_flip_vertically_on_load(1);
-    unsigned char* data = stbi_load(fname, &width, &height, &numChannels, 0);
+    unsigned char* data = stbi_load(fname, width, height, &numChannels, 0);
     if(data){
         // printf("%i %i %i %i\n", data[0], data[1], data[2], data[3]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, *width, *height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else{
         printf("file %s failed to load\n", fname);
+        return 0;
     }
     stbi_image_free(data);
     mat4x4 proj, view, temp;
@@ -206,7 +208,7 @@ void blitFileToAtlas(const char* fname, int xOffset, int yOffset){
         0.0f, 
         -100.0f, 100.0f);
     mat4x4Identity(view);
-    mat4x4Scale(view, vec3New(width, height, 1.0f));
+    mat4x4Scale(view, vec3New(*width, *height, 1.0f));
     mat4x4Translate(view, vec3New(xOffset, yOffset, 0.0));
     mat4x4MultiplyMatrix(temp, view, proj);
     glProgramUniformMatrix4fv(
@@ -222,6 +224,7 @@ void blitFileToAtlas(const char* fname, int xOffset, int yOffset){
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glDeleteTextures(1, &texture);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return 1;
 }
 
 unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderSrc){
@@ -229,7 +232,6 @@ unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderS
     char infoLog[512];
     unsigned int vertexShader, fragmentShader, shaderProgram;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    //const char* vertexShaderSource = (const char*) simple_vert_script; // stupid type conversion
     glShaderSource(vertexShader, 1, &vertexShaderSrc, NULL);
     glCompileShader(vertexShader);
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
@@ -238,7 +240,6 @@ unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderS
         printf("Shader compilation failed\n%s\n", infoLog);
     }
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    //const char* fragmentShaderSource = (const char*) simple_frag_script;
     glShaderSource(fragmentShader, 1, &fragmentShaderSrc, NULL);
     glCompileShader(fragmentShader);
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);

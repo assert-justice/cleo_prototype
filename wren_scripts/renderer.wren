@@ -6,4 +6,5 @@ class Renderer {
     foreign static getMaxSprites()
     foreign static setSpriteDimensions(idx, xOffset, yOffset, width, height)
     foreign static setSpriteTransform(idx, xPos, yPos, zPos, xScale, yScale, angle)
+    foreign static blitFileToAtlas(fname, xOffset, yOffset)
 }

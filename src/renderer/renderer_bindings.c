@@ -59,6 +59,25 @@ void setSpriteTransformHook(WrenVM* vm){
     vec3New(xScale, yScale, 0.0),
     angle);
 }
+void blitFileToAtlasHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 4);
+  const char* fname = wrenGetSlotString(vm, 1);
+  double xOffset = wrenGetSlotDouble(vm, 2);
+  double yOffset = wrenGetSlotDouble(vm, 3);
+  int width, height;
+  int res = blitFileToAtlas(fname, xOffset, yOffset, &width, &height);
+  if(!res){
+    wrenSetSlotNull(vm, 0);
+    return;
+  }
+  wrenSetSlotNewMap(vm, 0);
+  wrenSetSlotString(vm, 1, "width");
+  wrenSetSlotDouble(vm, 2, (double)width);
+  wrenSetMapValue(vm, 0, 1, 2);
+  wrenSetSlotString(vm, 1, "height");
+  wrenSetSlotDouble(vm, 2, (double)height);
+  wrenSetMapValue(vm, 0, 1, 2);
+}
 WrenForeignMethodFn bindRenderer(
   const char* module,
   const char* className,
@@ -87,6 +106,9 @@ WrenForeignMethodFn bindRenderer(
       }
       else if(strcmp(signature, "setSpriteTransform(_,_,_,_,_,_,_)") == 0 && isStatic){
         return setSpriteTransformHook;
+      }
+      else if(strcmp(signature, "blitFileToAtlas(_,_,_)") == 0 && isStatic){
+        return blitFileToAtlasHook;
       }
     }
   }
