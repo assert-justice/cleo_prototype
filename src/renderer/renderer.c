@@ -215,9 +215,9 @@ int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* widt
         engine.renderer.shaderProgram, 
         glGetUniformLocation(engine.renderer.shaderProgram, "proj"), 
         1, GL_FALSE, (const GLfloat*)&temp);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(engine.renderer.clearR, engine.renderer.clearG, engine.renderer.clearB, 1.0f);
+    // glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // glClearColor(engine.renderer.clearR, engine.renderer.clearG, engine.renderer.clearB, 1.0f);
     glUseProgram(engine.renderer.shaderProgram);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(engine.renderer.VAO);

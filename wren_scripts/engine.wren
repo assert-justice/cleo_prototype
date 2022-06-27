@@ -40,7 +40,7 @@ class Engine {
             }
         }
         Window.privateInit(windowSettings)
-        Renderer.privateInit({"width":100,"height":50})
+        Renderer.privateInit({"width":480,"height":270})
         return FileSystem.read(rootPath)
     }
     static privateReady(root){

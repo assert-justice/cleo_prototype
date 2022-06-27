@@ -7,7 +7,11 @@ class Input {
         var bindings = {
             "confirm": "enter",
             "cancel": "escape",
-            "special": "space"
+            "special": "space",
+            "up": "w",
+            "down": "s",
+            "left": "a",
+            "right": "d"
         }
         __baseController = {
             "buttons": []
