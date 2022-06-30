@@ -1,0 +1,4 @@
+#ifndef AUDIO_SYSTEM_BINDINGS
+#define AUDIO_SYSTEM_BINDINGS
+
+#endif

@@ -1,11 +1,14 @@
 #include "engine.h"
 #include "../wren_inc.h"
 #include "../window/window.h"
+#include "../audio_system/audio_system.h"
 #include "stdio.h"
 
 Engine engine = {0};
 
 int initEngine(){
+    // init audio system (duh)
+    initAudioSystem();
     // init vm
     engine.vm = wrenHelpInit();
     // make call handles for engine methods
@@ -38,6 +41,7 @@ void freeEngine(){
     freeWindow();
     wrenReleaseHandle(engine.vm, engine.classHandle);
     wrenReleaseHandle(engine.vm, engine.updateHandle);
+    freeAudioSystem();
 }
 
 void initRoot(const char* rootSrc){
