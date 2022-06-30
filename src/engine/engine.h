@@ -6,6 +6,7 @@
 #include "../input/input.h"
 #include "../window/window.h"
 #include "../renderer/renderer.h"
+#include "../audio_system/audio_system.h"
 
 typedef struct {
     GLFWwindow* window;
@@ -14,16 +15,7 @@ typedef struct {
     WrenHandle* updateHandle;
     WindowStats windowStats;
     Renderer renderer;
-    // const char* title;
-    // int windowMode;
-    // int monitor;
-    // int windowWidth;
-    // int windowHeight;
-    // int refreshRate;
-    // bool vsync;
-    // int pixelMode;
-    // int internalWidth;
-    // int internalHeight;
+    AudioSystem audioSystem;
 } Engine;
 
 // Initialize the engine. 

@@ -12,10 +12,10 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.18362.0",
-            "compilerPath": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\\\VC/bin/cl.exe",
+            "compilerPath": "C:/mingw64/mingw64/bin/gcc.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
