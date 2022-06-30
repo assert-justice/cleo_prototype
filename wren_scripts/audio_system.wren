@@ -1,6 +1,9 @@
 class AudioSystem {
-    foreign static addSfx()
-    foreign static setSfx(settings)
-    foreign static getNumSfx()
-    foreign static getMaxSfx()
+    foreign static addAudioSource()
+    foreign static loadAudioSource(idx, fname)
+    foreign static getNumAudioSources()
+    foreign static getMaxAudioSources()
+    foreign static playAudioSource(idx)
+    foreign static pauseAudioSource(idx)
+    foreign static stopAudioSource(idx)
 }

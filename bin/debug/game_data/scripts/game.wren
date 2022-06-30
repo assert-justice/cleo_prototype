@@ -3,6 +3,7 @@ import "node" for Node
 import "input" for Input
 import "window" for Window
 import "renderer" for Renderer
+import "audio_system" for AudioSystem
 
 class Game is Node {
     update(deltaTime){
@@ -19,6 +20,7 @@ class Game is Node {
             // var val = Renderer.addSprite()
             // System.print(val)
             // setFrame(_frame + 1)
+            AudioSystem.playAudioSource(0)
         }
         var dx = 0
         var dy = 0
@@ -60,6 +62,8 @@ class Game is Node {
             var stats = Renderer.blitFileToAtlas(fname, 0, tracker)
             tracker = tracker + stats["height"]
         }
+        AudioSystem.addAudioSource()
+        AudioSystem.loadAudioSource(0, "game_data/sfx/Climb_Rope_Loop_00.wav")
         // var sprStats = Renderer.blitFileToAtlas("game_data/sprites/characters_packed.png", 0, 0)
         // tracker = tracker + sprStats["height"]
         // Renderer.blitFileToAtlas("game_data/sprites/characters_packed.png", 0, tracker)

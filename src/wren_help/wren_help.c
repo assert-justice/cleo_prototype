@@ -9,6 +9,7 @@
 #include "../input/input_bindings.h"
 #include "../window/window_bindings.h"
 #include "../renderer/renderer_bindings.h"
+#include "../audio_system/audio_system_bindings.h"
 
 extern Engine engine;
 
@@ -78,6 +79,10 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   {
     result.source = renderer_script;
   }
+  else if (strcmp(name, "audio_system") == 0)
+  {
+    result.source = audio_system_script;
+  }
   else
   {
     result.source = NULL;
@@ -98,6 +103,7 @@ WrenForeignMethodFn bindForeignMethod(WrenVM* vm,
   if ((method = bindInput(module, className, isStatic, signature))) return method;  
   if ((method = bindWindow(module, className, isStatic, signature))) return method;  
   if ((method = bindRenderer(module, className, isStatic, signature))) return method;  
+  if ((method = bindAudioSystem(module, className, isStatic, signature))) return method;  
   vm = vm;
   printf("Bind attempt failed\nmodule: '%s' match: %i\nclassName: '%s' match: %i\nsignature: '%s' match: %i\n", 
     module, strcmp(module, "fs"), className, strcmp(className, "FileSystem"), signature, strcmp(signature, "read(_)"));

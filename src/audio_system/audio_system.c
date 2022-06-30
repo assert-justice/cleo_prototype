@@ -14,18 +14,66 @@ int initAudioSystem(){
     // 
     // ma_sound sound;
 
-    result = ma_sound_init_from_file(&engine.audioSystem.engine, "game_data/sfx/Climb_Rope_Loop_00.wav", 0, NULL, NULL, &engine.audioSystem.sounds[0]);
-    if (result != MA_SUCCESS) {
-        printf("Failed to load sound/n");
-        return 0;
-    }
-
-    // ma_sound_set_min_gain(&engine.audioSystem.sounds[0], 100.0f);
-    ma_sound_start(&engine.audioSystem.sounds[0]);
-    // ma_engine_play_sound(&engine.audioSystem.engine, "game_data/sfx/Climb_Rope_Loop_00.wav", NULL);
+    // result = ma_sound_init_from_file(&engine.audioSystem.engine, "game_data/sfx/Climb_Rope_Loop_00.wav", 0, NULL, NULL, &engine.audioSystem.sounds[0]);
+    // if (result != MA_SUCCESS) {
+    //     printf("Failed to load sound/n");
+    //     return 0;
+    // }
+    // ma_sound_start(&engine.audioSystem.sounds[0]);
     return 1;
 }
 void freeAudioSystem(){
-    ma_sound_uninit(&engine.audioSystem.sounds[0]);
+    for (int i = 0; i < engine.audioSystem.numSounds; i++){
+        ma_sound_uninit(&engine.audioSystem.sounds[i]);
+    }
+    
     ma_engine_uninit(&engine.audioSystem.engine);
+}
+
+int validIdx(int idx){
+    return idx >= 0 && idx < engine.audioSystem.numSounds;
+}
+
+int addAudioSource(){
+    int val = -1;
+    if (engine.audioSystem.numSounds < MAX_SOUNDS){
+        val = engine.audioSystem.numSounds;
+        engine.audioSystem.numSounds++;
+    }
+    return val;
+}
+
+int getNumAudioSources(){
+    return engine.audioSystem.numSounds;
+}
+
+int getMaxAudioSources(){
+    return MAX_SOUNDS;
+}
+
+int loadAudioSource(int idx, const char* fname){
+    if(!validIdx(idx)) return 0;
+    ma_result result;
+    result = ma_sound_init_from_file(&engine.audioSystem.engine, fname, 0, NULL, NULL, &engine.audioSystem.sounds[idx]);
+    if (result != MA_SUCCESS) {
+        printf("Failed to load sound %s/n", fname);
+        return 0;
+    }
+    return 1;
+}
+
+void playAudioSource(int idx){
+    if(!validIdx(idx)) return;
+    ma_sound_start(&engine.audioSystem.sounds[idx]);
+}
+
+void pauseAudioSource(int idx){
+    if(!validIdx(idx)) return;
+    ma_sound_stop(&engine.audioSystem.sounds[idx]);
+}
+
+void stopAudioSource(int idx){
+    if(!validIdx(idx)) return;
+    ma_sound_stop(&engine.audioSystem.sounds[idx]);
+    ma_sound_seek_to_pcm_frame(&engine.audioSystem.sounds[idx], 0);
 }
