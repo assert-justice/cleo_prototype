@@ -1,6 +1,6 @@
 #ifndef INPUT
 #define INPUT
-#include "GLFW/glfw3.h"
+// #include "GLFW/glfw3.h"
 // at this time input handling is done in the vm
 // this isn't great for performance but the implementation is simpler
 // might revisit the below later
