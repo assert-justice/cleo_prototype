@@ -42,6 +42,13 @@ void stopAudioSourceHook(WrenVM* vm){
     stopAudioSource(idx);
 }
 
+void setGainAudioSourceHook(WrenVM* vm){
+    wrenEnsureSlots(vm, 3);
+    int idx = (int)wrenGetSlotDouble(vm, 1);
+    float gain = (float)wrenGetSlotDouble(vm, 2);
+    setGainAudioSource(idx, gain);
+}
+
 WrenForeignMethodFn bindAudioSystem(
   const char* module,
   const char* className,
@@ -70,6 +77,9 @@ WrenForeignMethodFn bindAudioSystem(
       }
       else if(strcmp(signature, "stopAudioSource(_)") == 0 && isStatic){
         return stopAudioSourceHook;
+      }
+      else if(strcmp(signature, "setGainAudioSource(_,_)") == 0 && isStatic){
+        return setGainAudioSourceHook;
       }
     }
   }

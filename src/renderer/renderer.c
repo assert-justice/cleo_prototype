@@ -4,7 +4,7 @@
 #include "../shader_inc.h"
 #include "../extern/stb_image/stb_image.h"
 #include "../extern/lodepng/lodepng.h"
-// #include "../extern/gb_math/gb_math.h"
+#define MAX_SPRITES 16
 
 #define ATLAS_WIDTH 1024
 
@@ -104,6 +104,7 @@ void render(){
 }
 
 void initRenderer(int rendererWidth, int rendererHeight){
+    engine.renderer.sprites = (Sprite*)calloc(MAX_SPRITES, sizeof(Sprite));
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     engine.renderer.width = rendererWidth;
@@ -181,6 +182,7 @@ void freeRenderer(){
     glDeleteProgram(engine.renderer.shaderProgram);
     glDeleteFramebuffers(1, &engine.renderer.atlasBuffer);
     glDeleteTextures(1, &engine.renderer.atlasTexture);
+    free(engine.renderer.sprites);
 }
 
 int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* width, int* height){

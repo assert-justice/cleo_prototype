@@ -64,6 +64,7 @@ class Game is Node {
         }
         AudioSystem.addAudioSource()
         AudioSystem.loadAudioSource(0, "game_data/sfx/Climb_Rope_Loop_00.wav")
+        AudioSystem.setGainAudioSource(0, 50)
         // var sprStats = Renderer.blitFileToAtlas("game_data/sprites/characters_packed.png", 0, 0)
         // tracker = tracker + sprStats["height"]
         // Renderer.blitFileToAtlas("game_data/sprites/characters_packed.png", 0, tracker)

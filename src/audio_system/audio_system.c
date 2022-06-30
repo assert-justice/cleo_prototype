@@ -1,10 +1,12 @@
 #include "audio_system.h"
 #include "stdio.h"
 #include "../engine/engine.h"
+#define MAX_SOUNDS 16
 
 extern Engine engine;
 
 int initAudioSystem(){
+    engine.audioSystem.sounds = (ma_sound*)calloc(MAX_SOUNDS, sizeof(ma_sound));
     ma_result result;
     result = ma_engine_init(NULL, &engine.audioSystem.engine);
     if (result != MA_SUCCESS) {
@@ -31,7 +33,9 @@ void freeAudioSystem(){
 }
 
 int validIdx(int idx){
-    return idx >= 0 && idx < engine.audioSystem.numSounds;
+    int res = idx >= 0 && idx < engine.audioSystem.numSounds;
+    if(!res) printf("Warning: %i is not a valid audio source index.", idx);
+    return res;
 }
 
 int addAudioSource(){
@@ -76,4 +80,10 @@ void stopAudioSource(int idx){
     if(!validIdx(idx)) return;
     ma_sound_stop(&engine.audioSystem.sounds[idx]);
     ma_sound_seek_to_pcm_frame(&engine.audioSystem.sounds[idx], 0);
+}
+
+void setGainAudioSource(int idx, float gain){
+    if(!validIdx(idx)) return;
+    ma_sound_set_min_gain(&engine.audioSystem.sounds[idx], gain);
+    ma_sound_set_max_gain(&engine.audioSystem.sounds[idx], gain);
 }
