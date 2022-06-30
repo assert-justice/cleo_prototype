@@ -88,7 +88,7 @@ void render(){
         engine.windowStats.height, 
         -100.0f, 100.0f);
     mat4x4Identity(view);
-    float ratio = engine.windowStats.height / engine.renderer.height;
+    float ratio = (float)engine.windowStats.height / engine.renderer.height;
     mat4x4Scale(view, vec3New(engine.renderer.width * ratio,
         engine.renderer.height * ratio, 1.0f));
     mat4x4MultiplyMatrix(temp, view, proj);

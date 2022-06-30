@@ -56,6 +56,7 @@ class Game is Node {
         var tracker = 0
         var fnames = [
             "game_data/sprites/characters_packed.png",
+            "game_data/sprites/kenny_mini_square_mono_12x9.png",
             "game_data/sprites/tiles_packed.png",
         ]
         for (fname in fnames) {
