@@ -87,7 +87,7 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   else
   {
     // load user modules
-    char buffer[200];
+    char buffer[200] = {0};
     strcat(buffer, "game_data/scripts/");
     strcat(buffer, name);
     strcat(buffer, ".wren");
