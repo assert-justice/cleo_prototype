@@ -78,6 +78,11 @@ void blitFileToAtlasHook(WrenVM* vm){
   wrenSetSlotDouble(vm, 2, (double)height);
   wrenSetMapValue(vm, 0, 1, 2);
 }
+void blitSpriteToAtlasHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 2);
+  int idx = (int)wrenGetSlotDouble(vm, 1);
+  blitSpriteToAtlas(idx);
+}
 WrenForeignMethodFn bindRenderer(
   const char* module,
   const char* className,
@@ -109,6 +114,9 @@ WrenForeignMethodFn bindRenderer(
       }
       else if(strcmp(signature, "blitFileToAtlas(_,_,_)") == 0 && isStatic){
         return blitFileToAtlasHook;
+      }
+      else if(strcmp(signature, "blitSpriteToAtlas(_)") == 0 && isStatic){
+        return blitSpriteToAtlasHook;
       }
     }
   }

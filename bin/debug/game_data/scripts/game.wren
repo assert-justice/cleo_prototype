@@ -49,6 +49,11 @@ class Game is Node {
         Renderer.addSprite()
         Renderer.setSpriteDimensions(0, 0, 0, 1024, 1024)
         Renderer.setSpriteTransform(0, 0, 0, 0, 1024, 1024, 0)
+        
+        Renderer.addSprite()
+        Renderer.setSpriteDimensions(1, 0, 0, 24, 24)
+        Renderer.setSpriteTransform(1, 24, 0, 0, 24, 24, 0)
+        Renderer.blitSpriteToAtlas(1)
         _x = 0
         _y = 0
         _speed = 1

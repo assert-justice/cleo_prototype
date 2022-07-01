@@ -32,6 +32,7 @@ void freeRenderer();
 void render();
 void setClearColor(float red, float green, float blue);
 int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* width, int* height);
+void blitSpriteToAtlas(int idx);
 unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderSrc);
 int addSprite();
 int getNumSprites();

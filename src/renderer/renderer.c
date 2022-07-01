@@ -165,15 +165,15 @@ void initRenderer(int rendererWidth, int rendererHeight){
     engine.renderer.renderBuffer = renderBuffer;
 
     // engine.renderer.numSprites = 2;
-    mat4x4Identity(engine.renderer.sprites[0].matrix);
-    mat4x4Scale(engine.renderer.sprites[0].matrix, vec3New(24.0f, 24.0f, 0.0f));
-    float cell = 24.0f / ATLAS_WIDTH;
-    engine.renderer.sprites[0].dimensions = vec4New(0, cell, cell, cell);
+    // mat4x4Identity(engine.renderer.sprites[0].matrix);
+    // mat4x4Scale(engine.renderer.sprites[0].matrix, vec3New(24.0f, 24.0f, 0.0f));
+    // float cell = 24.0f / ATLAS_WIDTH;
+    // engine.renderer.sprites[0].dimensions = vec4New(0, cell, cell, cell);
 
-    mat4x4Identity(engine.renderer.sprites[1].matrix);
-    mat4x4Scale(engine.renderer.sprites[1].matrix, vec3New(24.0f, 24.0f, 0.0f));
-    mat4x4Translate(engine.renderer.sprites[1].matrix, vec3New(24.0f, 0.0f, 0.0f));
-    engine.renderer.sprites[1].dimensions = vec4New(cell, cell, cell, cell);
+    // mat4x4Identity(engine.renderer.sprites[1].matrix);
+    // mat4x4Scale(engine.renderer.sprites[1].matrix, vec3New(24.0f, 24.0f, 0.0f));
+    // mat4x4Translate(engine.renderer.sprites[1].matrix, vec3New(24.0f, 0.0f, 0.0f));
+    // engine.renderer.sprites[1].dimensions = vec4New(cell, cell, cell, cell);
     // int width, height;
     // blitFileToAtlas("game_data/sprites/characters_packed.png",0,0,&width,&height);
 }
@@ -229,6 +229,46 @@ int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* widt
     return 1;
 }
 
+int validateIdx(int idx){
+    int val = (idx >= 0) || (idx < engine.renderer.numSprites);
+    if(!val) printf("Invalid sprite index %i. Num sprites %i\n", val, engine.renderer.numSprites);
+    return val;
+}
+
+void blitSpriteToAtlas(int idx){
+    if(!validateIdx(idx)) return;
+    mat4x4 proj;
+    unsigned int projLoc, matLoc, dimLoc;
+    glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.atlasBuffer);
+    glUseProgram(engine.renderer.spriteShader);
+    glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
+    glBindVertexArray(engine.renderer.VAO);
+    mat4x4Orthographic(proj, 0.0f, 
+        engine.windowStats.width,
+        engine.windowStats.height,
+        0.0f, 
+        -100.0f, 100.0f);
+    projLoc = glGetUniformLocation(engine.renderer.spriteShader, "proj");
+    matLoc = glGetUniformLocation(engine.renderer.spriteShader, "matrix");
+    dimLoc = glGetUniformLocation(engine.renderer.spriteShader, "dimensions");
+    glProgramUniformMatrix4fv(
+        engine.renderer.spriteShader, 
+        projLoc, 
+        1, GL_FALSE, 
+        (const GLfloat*)&proj);
+    glProgramUniformMatrix4fv(
+        engine.renderer.spriteShader, 
+        matLoc, 
+        1, GL_FALSE, 
+        (const GLfloat*)&engine.renderer.sprites[idx].matrix);
+    glProgramUniform4fv(engine.renderer.spriteShader,
+        dimLoc,
+        1, (const GLfloat*)&engine.renderer.sprites[idx].dimensions      
+        );
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 unsigned int loadShader(const char* vertexShaderSrc, const char* fragmentShaderSrc){
     int  success;
     char infoLog[512];
@@ -280,7 +320,7 @@ int getMaxSprites(){
     return MAX_SPRITES;
 }
 void setSpriteDimensions(int idx, double xOffset, double yOffset, double width, double height){
-    if (idx < 0 || idx >= engine.renderer.numSprites) return;
+    if(!validateIdx(idx)) return;
     engine.renderer.sprites[idx].dimensions = vec4New(
         xOffset / ATLAS_WIDTH, 
         yOffset / ATLAS_WIDTH, 
@@ -288,7 +328,7 @@ void setSpriteDimensions(int idx, double xOffset, double yOffset, double width, 
         height / ATLAS_WIDTH);
 }
 void setSpriteTransform(int idx, vec3 position, vec3 scale, double angle){
-    if (idx < 0 || idx >= engine.renderer.numSprites) return;
+    if(!validateIdx(idx)) return;
     mat4x4Identity(engine.renderer.sprites[idx].matrix);
     mat4x4Scale(engine.renderer.sprites[idx].matrix, scale);
     mat4x4Translate(engine.renderer.sprites[idx].matrix, position);
