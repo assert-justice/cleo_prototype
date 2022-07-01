@@ -4,6 +4,7 @@ import "input" for Input
 import "window" for Window
 import "renderer" for Renderer
 import "audio_system" for AudioSystem
+import "collision" for Collider
 
 class Game is Node {
     update(deltaTime){

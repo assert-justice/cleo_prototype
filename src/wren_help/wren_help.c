@@ -2,6 +2,7 @@
 #include "wren_help.h"
 #include "stdio.h"
 #include "string.h"
+#include "../file_io/file_io.h"
 #include "../wren_inc.h"
 #include "../engine/engine.h"
 #include "../file_io/file_io_bindings.h"
@@ -85,7 +86,18 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   }
   else
   {
-    result.source = NULL;
+    // load user modules
+    char buffer[200];
+    strcat(buffer, "game_data/scripts/");
+    strcat(buffer, name);
+    strcat(buffer, ".wren");
+    printf("%s\n", buffer);
+    if (fileExists(buffer)){
+      result.source = readFile(buffer);
+    }
+    else{
+      result.source = NULL;
+    }
   }
   vm = vm;
   return result;
