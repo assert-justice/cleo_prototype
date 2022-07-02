@@ -20,8 +20,8 @@ class Engine {
             "title": "Cleo",
             "fullScreen": false,
             "monitorIndex": 0,
-            "width": 800,
-            "height": 600,
+            "width": 960,
+            "height": 540,
             "refreshRate": 0,
             "vsync": true,
             // "pixelMode": 0, // 0: pixel perfect, 1: stretch width, 2: stretch height, 3: stretch both

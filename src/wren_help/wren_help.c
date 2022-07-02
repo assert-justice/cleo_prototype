@@ -91,7 +91,7 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
     strcat(buffer, "game_data/scripts/");
     strcat(buffer, name);
     strcat(buffer, ".wren");
-    printf("%s\n", buffer);
+    // printf("%s\n", buffer);
     if (fileExists(buffer)){
       result.source = readFile(buffer);
     }
