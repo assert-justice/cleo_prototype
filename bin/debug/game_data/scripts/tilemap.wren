@@ -30,6 +30,8 @@ class TileMap is Sprite{
         Renderer.setSpriteDimensions(_brushSprite, 0, 0, cellWidth, cellHeight)
         Renderer.setSpriteTransform(_brushSprite, 0, 0, 0, cellWidth, cellHeight, 0)
     }
+    width{_width}
+    height{_height}
     addTemplate(xOffset, yOffset, solid){
         _tileTemplates.add([xOffset, yOffset, solid])
         return _tileTemplates.count - 1
@@ -48,5 +50,43 @@ class TileMap is Sprite{
         Renderer.blitSpriteToAtlas(_brushSprite)
         // add tile to tiles
         _tiles[y][x] = [idx, solid]
+    }
+    solid(x, y){
+        var val = _tiles[y][x]
+        if(val && val[1]) return true
+        return false
+    }
+    collide(position, velocity, boxWidth, boxHeight){
+        // assume current position is clear
+        var minX = -Num.infinity
+        var minY = -Num.infinity
+        var maxX = Num.infinity
+        var maxY = Num.infinity
+        var left = (position.x / _cellWidth).floor
+        // var right = left + 1
+        var right = ((position.x + boxWidth) / _cellWidth).floor
+        var top = (position.y / _cellHeight).floor
+        var bottom = ((position.y + boxHeight) / _cellHeight).floor
+        // check left and right sides
+        for (y in top..bottom) {
+            if(solid(left-1,y)){
+                minX = left * _cellWidth
+            }
+            if(solid(right+1,y)){
+                maxX = (right+1) * _cellWidth - boxWidth - 1
+            }
+        }
+        // check top and bottom sides
+        for (x in left..right) {
+            if(solid(x, top-1)){
+                minY = top * _cellHeight
+            }
+            if(solid(x, bottom+1)){
+                maxY = (bottom+1) * _cellHeight - boxHeight - 1
+            }
+        }
+        position.x = (position.x + velocity.x).clamp(minX, maxX)
+        position.y = (position.y + velocity.y).clamp(minY, maxY)
+        return position
     }
 }

@@ -11,12 +11,15 @@ import "vmath" for Vector2, Vector3
 class Game is Node {
     construct new(){
         super(null)
-        _x = 384
-        _y = 0
+        _x = 100
+        _y = 100
         _speed = 3
-        _atlas = Sprite.new(this, 0,0,1024, 1024)
+        _atlas = Sprite.new(this, 0,0,24, 24)
         _atlas.transform.position.x = _x
         _atlas.transform.position.y = _y
+        // _atlas = Sprite.new(this, 0,0,1024, 1024)
+        // _atlas.transform.position.x = _x
+        // _atlas.transform.position.y = _y
         _vel = Vector3.new(0, 0, 0)
         var tracker = 0
         var fnames = [
@@ -28,11 +31,11 @@ class Game is Node {
             var stats = Renderer.blitFileToAtlas(fname, 0, tracker)
             tracker = tracker + stats["height"]
         }
-        _tileMap = TileMap.new(this, 16, 10, 18, 18, 0, tracker)
-        _tileMap.addTemplate(0, 72, false)
-        for (x in 0...16) {
-            for(y in 0...10){
-                if (x == 0 || x == 15 || y == 0 || y == 9){
+        _tileMap = TileMap.new(this, 27, 15, 18, 18, 0, tracker)
+        _tileMap.addTemplate(0, 72, true)
+        for (x in 0..._tileMap.width) {
+            for(y in 0..._tileMap.height){
+                if (x == 0 || x == _tileMap.width-10 || y == 0 || y == _tileMap.height-1){
                     _tileMap.setTile(0, x, y)
                 }
             }
@@ -72,8 +75,9 @@ class Game is Node {
             _vel.y = _vel.y + 1
         }
         _vel.normalize().mulScalar(_speed)
-        _atlas.transform.position.x = _atlas.transform.position.x + _vel.x
-        _atlas.transform.position.y = _atlas.transform.position.y + _vel.y
+        _atlas.transform.position = _tileMap.collide(_atlas.transform.position, _vel, 24, 24)
+        // _atlas.transform.position.x = _atlas.transform.position.x + _vel.x
+        // _atlas.transform.position.y = _atlas.transform.position.y + _vel.y
         // it's important to call the super method
         // typically after we have handled our own updates
         // that way if we change a child it will update accordingly *this* tick

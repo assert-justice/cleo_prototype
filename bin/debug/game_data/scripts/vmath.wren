@@ -80,7 +80,6 @@ class Transform {
     position{_position}
     position=(val){
         _position = val
-        System.print("here")
         dirty = true
     }
     scale{_scale}
