@@ -20,12 +20,28 @@ GLFWmonitor* getMonitor(int monitorIndex){
 }
 
 void setWindowStats(WindowStats stats){
-    engine.windowStats = stats;
     GLFWmonitor* monitor = getMonitor(stats.monitorIndex);
     // const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     if (!stats.fullScreen){ // if we want a window
         monitor = NULL;
     }
+    else{
+        // if it is fullscreen we want to request borderless
+        // overwrite the requested stats
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+ 
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+        stats.width = mode->width;
+        stats.height = mode->height;
+        stats.refreshRate = mode->refreshRate;
+        
+        // GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", monitor, NULL);
+    }
+    engine.windowStats = stats;
     if(engine.window == NULL){
         engine.window = glfwCreateWindow(stats.width, stats.height, stats.title, monitor, NULL);
     }

@@ -23,10 +23,7 @@ class Engine {
             "width": 960,
             "height": 540,
             "refreshRate": 0,
-            "vsync": true,
-            // "pixelMode": 0, // 0: pixel perfect, 1: stretch width, 2: stretch height, 3: stretch both
-            // "internalWidth": 400,
-            // "internalHeight": 200,
+            "vsync": true
         }
         // load settings if availible
         var settingsPath = "%(folderName)/%(manifest["settings"])"
