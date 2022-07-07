@@ -1,5 +1,8 @@
 #ifndef ENGINE
 #define ENGINE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "../extern/glad/gles2.h"
 #include "GLFW/glfw3.h"
 #include "../wren_help/wren_help.h"
@@ -16,6 +19,8 @@ typedef struct {
     WindowStats windowStats;
     Renderer renderer;
     AudioSystem audioSystem;
+    FILE* logFile;
+    int shouldLog;
 } Engine;
 
 // Initialize the engine. 

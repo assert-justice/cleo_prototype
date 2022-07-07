@@ -8,6 +8,9 @@
 Engine engine = {0};
 
 int initEngine(){
+    // grab logging file
+    // engine.shouldLog = 1;
+    if(engine.shouldLog) engine.logFile = fopen("logging.txt", "w");
     // init audio system (duh)
     initAudioSystem();
     // init vm
@@ -43,6 +46,7 @@ void freeEngine(){
     wrenReleaseHandle(engine.vm, engine.classHandle);
     wrenReleaseHandle(engine.vm, engine.updateHandle);
     freeAudioSystem();
+    if(engine.shouldLog) fclose(engine.logFile);
 }
 
 void initRoot(const char* rootSrc){
@@ -80,10 +84,14 @@ void gameLoop(){
     const double dt = 0.01; // 100 ticks / second
     double currentTime = getTime();
     double acc = 0.0;
+    double scriptTime;
+    double elapsedTime;
     while (!glfwWindowShouldClose(engine.window))
     {
         double newTime = getTime();
         double frameTime = newTime - currentTime;
+        if(engine.shouldLog) fprintf(engine.logFile, "RENDER start: %lf end: %lf\n", newTime, frameTime);
+
         currentTime = newTime;
         acc += frameTime;
         while(acc >= dt){
@@ -91,7 +99,10 @@ void gameLoop(){
             wrenEnsureSlots(engine.vm, 2);
             wrenSetSlotDouble(engine.vm, 1, dt);
             wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
+            scriptTime = getTime();
             wrenCall(engine.vm, engine.updateHandle);
+            elapsedTime = getTime() - scriptTime;
+            if(engine.shouldLog) fprintf(engine.logFile, "SCRIPT start: %lf end: %lf\n", scriptTime, elapsedTime);
             acc -= dt;
             t += dt;
         }
