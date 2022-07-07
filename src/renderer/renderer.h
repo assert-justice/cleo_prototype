@@ -23,6 +23,7 @@ typedef struct {
     float clearR;
     float clearG;
     float clearB;
+    vec3 transparentColor;
     Sprite* sprites;
     int numSprites;
 } Renderer;

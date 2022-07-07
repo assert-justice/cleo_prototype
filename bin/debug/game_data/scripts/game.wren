@@ -11,16 +11,6 @@ import "vmath" for Vector2, Vector3
 class Game is Node {
     construct new(){
         super(null)
-        _x = 100
-        _y = 100
-        _speed = 200
-        _atlas = Sprite.new(this, 0,0,24, 24)
-        _atlas.transform.position.x = _x
-        _atlas.transform.position.y = _y
-        // _atlas = Sprite.new(this, 0,0,1024, 1024)
-        // _atlas.transform.position.x = _x
-        // _atlas.transform.position.y = _y
-        _vel = Vector3.new(0,0,0)
         var tracker = 0
         var fnames = [
             "game_data/sprites/characters_packed.png",
@@ -33,6 +23,7 @@ class Game is Node {
         }
         _tileMap = TileMap.new(this, 27, 15, 18, 18, 0, tracker)
         _tileMap.addTemplate(0, 72, true)
+        _tileMap.addTemplate(0, 24, false)
         for (x in 0..._tileMap.width) {
             for(y in 0..._tileMap.height){
                 if (x == 0 || x == _tileMap.width-10 || y == 0 || y == _tileMap.height-1){
@@ -40,6 +31,18 @@ class Game is Node {
                 }
             }
         }
+        _tileMap.setTile(0, 1, 1)
+        _tileMap.setTile(1, 1, 1)
+        _x = 100
+        _y = 100
+        _speed = 200
+        _atlas = Sprite.new(this, 0,0,24, 24)
+        _atlas.transform.position.x = _x
+        _atlas.transform.position.y = _y
+        // _atlas = Sprite.new(this, 0,0,1024, 1024)
+        // _atlas.transform.position.x = _x
+        // _atlas.transform.position.y = _y
+        _vel = Vector3.new(0,0,0)
         AudioSystem.addAudioSource()
         AudioSystem.loadAudioSource(0, "game_data/sfx/Climb_Rope_Loop_00.wav")
         AudioSystem.setGainAudioSource(0, 50)

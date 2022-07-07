@@ -45,7 +45,7 @@ void setClearColor(float red, float green, float blue){
 
 void render(){
     mat4x4 proj, view, temp;
-    unsigned int projLoc, matLoc, dimLoc;
+    unsigned int projLoc, matLoc, dimLoc, transLoc;
     // draw sprites
     glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.renderBuffer);
     glUseProgram(engine.renderer.spriteShader);
@@ -60,6 +60,7 @@ void render(){
     projLoc = glGetUniformLocation(engine.renderer.spriteShader, "proj");
     matLoc = glGetUniformLocation(engine.renderer.spriteShader, "matrix");
     dimLoc = glGetUniformLocation(engine.renderer.spriteShader, "dimensions");
+    transLoc = glGetUniformLocation(engine.renderer.spriteShader, "transparentColor");
     for (int i = 0; i < engine.renderer.numSprites; i++)
     {
         glProgramUniformMatrix4fv(
@@ -75,6 +76,10 @@ void render(){
         glProgramUniform4fv(engine.renderer.spriteShader,
             dimLoc,
             1, (const GLfloat*)&engine.renderer.sprites[i].dimensions      
+            );
+        glProgramUniform3fv(engine.renderer.spriteShader,
+            transLoc,
+            1, (const GLfloat*)&engine.renderer.transparentColor
             );
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
@@ -121,7 +126,7 @@ void initRenderer(int rendererWidth, int rendererHeight){
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quad), quad, GL_STATIC_DRAW);
     unsigned int shaderProgram = loadShader(simple_vert_script, simple_frag_script);
-    engine.renderer.spriteShader = loadShader(sprite_vert_script, simple_frag_script);
+    engine.renderer.spriteShader = loadShader(sprite_vert_script, sprite_frag_script);
     glUseProgram(shaderProgram);
     unsigned int positionLoc, textureLoc;
     positionLoc = glGetAttribLocation(shaderProgram, "aPos");
@@ -238,7 +243,7 @@ int validateIdx(int idx){
 void blitSpriteToAtlas(int idx){
     if(!validateIdx(idx)) return;
     mat4x4 proj;
-    unsigned int projLoc, matLoc, dimLoc;
+    unsigned int projLoc, matLoc, dimLoc, transLoc;
     glBindFramebuffer(GL_FRAMEBUFFER, engine.renderer.atlasBuffer);
     glUseProgram(engine.renderer.spriteShader);
     glBindTexture(GL_TEXTURE_2D, engine.renderer.atlasTexture);
@@ -251,6 +256,7 @@ void blitSpriteToAtlas(int idx){
     projLoc = glGetUniformLocation(engine.renderer.spriteShader, "proj");
     matLoc = glGetUniformLocation(engine.renderer.spriteShader, "matrix");
     dimLoc = glGetUniformLocation(engine.renderer.spriteShader, "dimensions");
+    transLoc = glGetUniformLocation(engine.renderer.spriteShader, "transparentColor");
     glProgramUniformMatrix4fv(
         engine.renderer.spriteShader, 
         projLoc, 
@@ -265,6 +271,11 @@ void blitSpriteToAtlas(int idx){
         dimLoc,
         1, (const GLfloat*)&engine.renderer.sprites[idx].dimensions      
         );
+    vec3 color = vec3New(-1.0, -1.0, -1.0); // do not use transparency
+    glProgramUniform3fv(engine.renderer.spriteShader,
+            transLoc,
+            1, (const GLfloat*)&color
+            );
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
