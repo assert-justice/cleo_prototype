@@ -13,7 +13,7 @@ class Game is Node {
         super(null)
         _x = 100
         _y = 100
-        _speed = 3
+        _speed = 200
         _atlas = Sprite.new(this, 0,0,24, 24)
         _atlas.transform.position.x = _x
         _atlas.transform.position.y = _y
@@ -74,7 +74,7 @@ class Game is Node {
         if (Input.getButton("down", 0)){
             _vel.y = _vel.y + 1
         }
-        _vel.normalize().mulScalar(_speed)
+        _vel.normalize().mulScalar(_speed * deltaTime)
         _atlas.transform.position = _tileMap.collide(_atlas.transform.position, _vel, 24, 24)
         // _atlas.transform.position.x = _atlas.transform.position.x + _vel.x
         // _atlas.transform.position.y = _atlas.transform.position.y + _vel.y

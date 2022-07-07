@@ -3,6 +3,7 @@
 #include "../window/window.h"
 #include "../audio_system/audio_system.h"
 #include "stdio.h"
+#include "sys/time.h"
 
 Engine engine = {0};
 
@@ -68,17 +69,34 @@ void initRoot(const char* rootSrc){
     gameLoop();
 }
 
+double getTime(){
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+    return (double)current_time.tv_sec + (double)current_time.tv_usec / 1000000; 
+}
+
 void gameLoop(){
+    double t = 0.0;
+    const double dt = 0.01; // 100 ticks / second
+    double currentTime = getTime();
+    double acc = 0.0;
     while (!glfwWindowShouldClose(engine.window))
     {
-        // Keep running
+        double newTime = getTime();
+        double frameTime = newTime - currentTime;
+        currentTime = newTime;
+        acc += frameTime;
+        while(acc >= dt){
+            glfwPollEvents();
+            wrenEnsureSlots(engine.vm, 2);
+            wrenSetSlotDouble(engine.vm, 1, dt);
+            wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
+            wrenCall(engine.vm, engine.updateHandle);
+            acc -= dt;
+            t += dt;
+        }
         render();
         glfwSwapBuffers(engine.window);
-        glfwPollEvents();
-        wrenEnsureSlots(engine.vm, 2);
-        wrenSetSlotDouble(engine.vm, 1, 0.16);
-        wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
-        wrenCall(engine.vm, engine.updateHandle);
     }
     freeEngine();
 }
