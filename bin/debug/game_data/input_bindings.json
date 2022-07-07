@@ -1,0 +1,84 @@
+{
+    "ui_up":{
+        "keys":["up","w"],
+        "pad_buttons":["d_up"],
+        "pad_axes":[
+            {
+                "name": "rsy",
+                "threshold": 0.25,
+                "sign": ">"
+            }
+        ]
+    },
+    "ui_down":{
+        "keys":["down","s"],
+        "pad_buttons":["d_down"],
+        "pad_axes":[
+            {
+                "name": "rsy",
+                "threshold": -0.25,
+                "sign": "<"
+            }
+        ]
+    },
+    "ui_right":{
+        "keys":["right","d"],
+        "pad_buttons":["d_right"],
+        "pad_axes":[
+            {
+                "name": "rsx",
+                "threshold": 0.25,
+                "sign": ">"
+            }
+        ]
+    },
+    "ui_left":{
+        "keys":["left","a"],
+        "pad_buttons":["d_left"],
+        "pad_axes":[
+            {
+                "name": "rsx",
+                "threshold": -0.25,
+                "sign": "<"
+            }
+        ]
+    },
+    "ui_confirm":{
+        "keys":["space","enter"],
+        "pad_buttons":["confirm"]
+    },
+    "ui_cancel":{
+        "keys":["escape"],
+        "pad_buttons":["cancel"]
+    },
+    "fire":{
+        "keys":["left_shift"],
+        "pad_buttons":["x"]
+    },
+    "move":{
+        "x_axis":{
+            "keys":[
+                {
+                    "name": "a",
+                    "mod": -1
+                },
+                {
+                    "name": "d",
+                    "mod": 1
+                }
+            ]
+        },
+        "y_axis":{
+            "keys":[
+                {
+                    "name": "w",
+                    "mod": -1
+                },
+                {
+                    "name": "s",
+                    "mod": 1
+                }
+            ]
+        }
+    }
+}

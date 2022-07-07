@@ -29,10 +29,11 @@ class Engine {
             // "internalHeight": 200,
         }
         // load settings if availible
+        var settingsPath = "%(folderName)/%(manifest["settings"])"
         var windowSettings = {}
-        // if (FileSystem.fileExists("settings.json")){
-        //     settings = Json.parse(FileSystem.read("settings.json"))
-        // }
+        if (FileSystem.fileExists(settingsPath)){
+            windowSettings = Json.parse(FileSystem.read(settingsPath))
+        }
         // // for missing settings use default
         for (element in defaultWindow){
             if (!windowSettings.containsKey(element.key)){
@@ -41,10 +42,20 @@ class Engine {
         }
         Window.privateInit(windowSettings)
         Renderer.privateInit({"width":480,"height":270})
+        var inputsPath = "%(folderName)/%(manifest["inputs"])"
+        var inputs = null
+        if (FileSystem.fileExists(inputsPath)){
+            inputs = Json.parse(FileSystem.read(inputsPath))
+        }
+        var bindingsPath = "%(folderName)/%(manifest["input_bindings"])"
+        var bindings = null
+        if (FileSystem.fileExists(bindingsPath)){
+            bindings = Json.parse(FileSystem.read(bindingsPath))
+        }
+        Input.privateInit(inputs, bindings)
         return FileSystem.read(rootPath)
     }
     static privateReady(root){
-        Input.privateInit()
         __root = root
     }
     static update(deltaTime){

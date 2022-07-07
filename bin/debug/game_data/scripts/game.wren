@@ -20,7 +20,7 @@ class Game is Node {
         // _atlas = Sprite.new(this, 0,0,1024, 1024)
         // _atlas.transform.position.x = _x
         // _atlas.transform.position.y = _y
-        _vel = Vector3.new(0, 0, 0)
+        _vel = Vector3.new(0,0,0)
         var tracker = 0
         var fnames = [
             "game_data/sprites/characters_packed.png",
@@ -45,36 +45,16 @@ class Game is Node {
         AudioSystem.setGainAudioSource(0, 50)
     }
     update(deltaTime){
-        if(Input.getButtonPressed("cancel", 0)){
+        if(Input.getButtonPressed("ui_cancel", 0)){
             Engine.quit()
         }
-        if(Input.getButtonPressed("special", 0)){
-            // System.print("hello")
-            // System.print()
-            // var stats = Window.getStats()
-            // stats["fullScreen"] = true
-            // Window.setStats(stats)
-            // Renderer.setClearColor(0.2, 0.3, 0.3)
-            // var val = Renderer.addSprite()
-            // System.print(val)
-            // setFrame(_frame + 1)
+        if(Input.getButtonPressed("fire", 0)){
             AudioSystem.playAudioSource(0)
         }
-        _vel.x = 0
-        _vel.y = 0
-        if (Input.getButton("left", 0)){
-            _vel.x = _vel.x - 1
-        }
-        if (Input.getButton("right", 0)){
-            _vel.x = _vel.x + 1
-        }
-        if (Input.getButton("up", 0)){
-            _vel.y = _vel.y - 1
-        }
-        if (Input.getButton("down", 0)){
-            _vel.y = _vel.y + 1
-        }
-        _vel.normalize().mulScalar(_speed * deltaTime)
+        var move = Input.getAxis2("move", 0)
+        move.mulScalar(_speed * deltaTime)
+        _vel.x = move.x
+        _vel.y = move.y
         _atlas.transform.position = _tileMap.collide(_atlas.transform.position, _vel, 24, 24)
         // _atlas.transform.position.x = _atlas.transform.position.x + _vel.x
         // _atlas.transform.position.y = _atlas.transform.position.y + _vel.y

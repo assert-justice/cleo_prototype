@@ -40,9 +40,9 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
     } break;
   }
   vm = vm;
-  // if(engine.window){
-  //   quitEngine();
-  // }
+  if(engine.window){
+    quitEngine();
+  }
 }
 
 WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
@@ -79,6 +79,10 @@ WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
   else if (strcmp(name, "audio_system") == 0)
   {
     result.source = audio_system_script;
+  }
+  else if (strcmp(name, "vmath") == 0)
+  {
+    result.source = vmath_script;
   }
   else
   {
