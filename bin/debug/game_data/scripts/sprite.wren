@@ -9,14 +9,24 @@ class Sprite is Node {
         if(_handle == -1){
             Fiber.abort("not enough sprites")
         }
-        _offset = Vector2.new(xOffset, yOffset)
-        _dimensions = Vector2.new(width, height)
-        _dirty = true
+        _dirty = [true]
+        _offset = Vector2.new(xOffset, yOffset, _dirty)
+        _dimensions = Vector2.new(width, height, _dirty)
+    }
+    offset{_offset}
+    offset=(val){
+        _offset = val
+        _dirty[0] = true
+    }
+    dimensions{_dimensions}
+    dimensions=(val){
+        _dimensions = val
+        _dirty[0] = true
     }
     update(deltaTime){
-        if(_dirty){
+        if(_dirty[0]){
             Renderer.setSpriteDimensions(_handle, _offset.x, _offset.y, _dimensions.x, _dimensions.y)
-            _dirty = false
+            _dirty[0] = false
         }
             // System.print(transform.dirty)
         if (transform.dirty){

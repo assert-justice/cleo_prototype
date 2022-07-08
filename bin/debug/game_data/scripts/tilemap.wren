@@ -1,5 +1,6 @@
 import "renderer" for Renderer
 import "sprite" for Sprite
+import "vmath" for Vector3
 
 class TileMap is Sprite{
     construct new(parent, width, height, cellWidth, cellHeight, spriteX, spriteY){
@@ -85,8 +86,6 @@ class TileMap is Sprite{
                 maxY = (bottom+1) * _cellHeight - boxHeight - 1
             }
         }
-        position.x = (position.x + velocity.x).clamp(minX, maxX)
-        position.y = (position.y + velocity.y).clamp(minY, maxY)
-        return position
+        return Vector3.new((position.x + velocity.x).clamp(minX, maxX), (position.y + velocity.y).clamp(minY, maxY), 0)
     }
 }

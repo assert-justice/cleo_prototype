@@ -7,6 +7,7 @@ import "audio_system" for AudioSystem
 import "tilemap" for TileMap
 import "sprite" for Sprite
 import "vmath" for Vector2, Vector3
+import "animated_sprite" for AnimatedSprite
 
 class Game is Node {
     construct new(){
@@ -36,9 +37,28 @@ class Game is Node {
         _x = 100
         _y = 100
         _speed = 200
-        _atlas = Sprite.new(this, 0,0,24, 24)
-        _atlas.transform.position.x = _x
-        _atlas.transform.position.y = _y
+        _colors = ["green", "blue", "pink", "orange", "cream"]
+        _anim = "green"
+        _player = AnimatedSprite.new(this, Vector2.new(0,0), Vector2.new(24, 24), 5)
+        var i = 0
+        for (color in _colors) {
+            var x = i * 48
+            var y = 0
+            if (i == 4){
+                x = 0
+                y = 24
+            }
+            _player.newAnim(color)
+            _player.addFrame(color,Vector2.new(x,y), Vector2.new(24, 24))
+            _player.addFrame(color,Vector2.new(x+24,y), Vector2.new(24, 24))
+            i = i + 1
+        }
+        // _player.play(_anim)
+        _player.transform.position.x = _x
+        _player.transform.position.y = _y
+        // _atlas = Sprite.new(this, 0,0,24, 24)
+        // _atlas.transform.position.x = _x
+        // _atlas.transform.position.y = _y
         // _atlas = Sprite.new(this, 0,0,1024, 1024)
         // _atlas.transform.position.x = _x
         // _atlas.transform.position.y = _y
@@ -53,12 +73,18 @@ class Game is Node {
         }
         if(Input.getButtonPressed("fire", 0)){
             AudioSystem.playAudioSource(0)
+            var i = _colors.indexOf(_anim) + 1
+            if (i == _colors.count) i = 0
+            _anim = _colors[i]
         }
         var move = Input.getAxis2("move", 0)
         move.mulScalar(_speed * deltaTime)
         _vel.x = move.x
         _vel.y = move.y
-        _atlas.transform.position = _tileMap.collide(_atlas.transform.position, _vel, 24, 24)
+        var newPos = _tileMap.collide(_player.transform.position, _vel, 24, 24)
+        if (newPos.x == _player.transform.position.x) _player.pause()
+        if (newPos.x != _player.transform.position.x && !_player.playing) _player.play(_anim)
+        _player.transform.position = newPos
         // _atlas.transform.position.x = _atlas.transform.position.x + _vel.x
         // _atlas.transform.position.y = _atlas.transform.position.y + _vel.y
         // it's important to call the super method

@@ -1,6 +1,6 @@
 {
     "title": "Test",
-    "fullScreen": true,
+    "fullScreen": false,
     "monitorIndex": 0,
     "width": 960,
     "height": 540,

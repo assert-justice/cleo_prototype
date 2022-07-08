@@ -38,8 +38,8 @@ class Engine {
             }
         }
         Window.privateInit(windowSettings)
-        Renderer.privateInit({"width":960,"height":540})
-        // Renderer.privateInit({"width":480,"height":270})
+        // Renderer.privateInit({"width":960,"height":540})
+        Renderer.privateInit({"width":480,"height":270})
         var inputsPath = "%(folderName)/%(manifest["inputs"])"
         var inputs = null
         if (FileSystem.fileExists(inputsPath)){
