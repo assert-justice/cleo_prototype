@@ -19,5 +19,10 @@ int loadAudioSource(int idx, const char* fname);
 void playAudioSource(int idx);
 void pauseAudioSource(int idx);
 void stopAudioSource(int idx);
-void setGainAudioSource(int idx, float gain);
+int audioSourceIsPlaying(int idx);
+void setVolumeAudioSource(int idx, double volume);
+double getVolumeAudioSource(int idx);
+void loopAudioSource(int idx, int shouldLoop);
+int audioSourceIsLooping(int idx);
+
 #endif

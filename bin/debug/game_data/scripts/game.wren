@@ -8,6 +8,7 @@ import "tilemap" for TileMap
 import "sprite" for Sprite
 import "vmath" for Vector2, Vector3
 import "animated_sprite" for AnimatedSprite
+import "audio_source" for AudioSource
 
 class Game is Node {
     construct new(){
@@ -22,6 +23,8 @@ class Game is Node {
             var stats = Renderer.blitFileToAtlas(fname, 0, tracker)
             tracker = tracker + stats["height"]
         }
+        _source = AudioSource.new(this, "game_data/sfx/Climb_Rope_Loop_00.wav")
+        _source.volume = 0.25
         _tileMap = TileMap.new(this, 27, 15, 18, 18, 0, tracker)
         _tileMap.addTemplate(0, 72, true)
         _tileMap.addTemplate(0, 24, false)
@@ -63,16 +66,17 @@ class Game is Node {
         // _atlas.transform.position.x = _x
         // _atlas.transform.position.y = _y
         _vel = Vector3.new(0,0,0)
-        AudioSystem.addAudioSource()
-        AudioSystem.loadAudioSource(0, "game_data/sfx/Climb_Rope_Loop_00.wav")
-        AudioSystem.setGainAudioSource(0, 50)
+        // AudioSystem.addAudioSource()
+        // AudioSystem.loadAudioSource(0, "game_data/sfx/Climb_Rope_Loop_00.wav")
+        // AudioSystem.setGainAudioSource(0, 50)
     }
     update(deltaTime){
         if(Input.getButtonPressed("ui_cancel", 0)){
             Engine.quit()
         }
         if(Input.getButtonPressed("fire", 0)){
-            AudioSystem.playAudioSource(0)
+            // AudioSystem.playAudioSource(0)
+            _source.play()
             var i = _colors.indexOf(_anim) + 1
             if (i == _colors.count) i = 0
             _anim = _colors[i]

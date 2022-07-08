@@ -58,7 +58,7 @@ int getMaxAudioSources(){
 int loadAudioSource(int idx, const char* fname){
     if(!validIdx(idx)) return 0;
     ma_result result;
-    result = ma_sound_init_from_file(&engine.audioSystem.engine, fname, 0, NULL, NULL, &engine.audioSystem.sounds[idx]);
+    result = ma_sound_init_from_file(&engine.audioSystem.engine, fname, MA_SOUND_FLAG_DECODE | MA_SOUND_FLAG_STREAM, NULL, NULL, &engine.audioSystem.sounds[idx]);
     if (result != MA_SUCCESS) {
         printf("Failed to load sound %s/n", fname);
         return 0;
@@ -82,8 +82,26 @@ void stopAudioSource(int idx){
     ma_sound_seek_to_pcm_frame(&engine.audioSystem.sounds[idx], 0);
 }
 
-void setGainAudioSource(int idx, float gain){
+int audioSourceIsPlaying(int idx){
+    if(!validIdx(idx)) return 0;
+    return (int)ma_sound_is_playing(&engine.audioSystem.sounds[idx]);
+}
+
+void setVolumeAudioSource(int idx, double volume){
     if(!validIdx(idx)) return;
-    ma_sound_set_min_gain(&engine.audioSystem.sounds[idx], gain);
-    ma_sound_set_max_gain(&engine.audioSystem.sounds[idx], gain);
+    ma_sound_set_volume(&engine.audioSystem.sounds[idx], (float)volume);
+}
+
+double getVolumeAudioSource(int idx){
+    if(!validIdx(idx)) return 0.0;
+    return (double)ma_sound_get_volume(&engine.audioSystem.sounds[idx]);
+}
+
+void loopAudioSource(int idx, int shouldLoop){
+    if(!validIdx(idx)) return;
+    ma_sound_set_looping(&engine.audioSystem.sounds[idx], (ma_bool32) shouldLoop);
+}
+int audioSourceIsLooping(int idx){
+    if(!validIdx(idx)) return 0;
+    return (int)ma_sound_is_looping(&engine.audioSystem.sounds[idx]);
 }

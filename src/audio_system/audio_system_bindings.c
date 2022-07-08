@@ -41,12 +41,31 @@ void stopAudioSourceHook(WrenVM* vm){
     int idx = (int)wrenGetSlotDouble(vm, 1);
     stopAudioSource(idx);
 }
-
-void setGainAudioSourceHook(WrenVM* vm){
+void audioSourceIsPlayingHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 2);
+  int idx = (int)wrenGetSlotDouble(vm, 1);
+  int val = audioSourceIsPlaying(idx);
+  wrenSetSlotDouble(vm, 0, (double)val);
+}
+void getVolumeAudioSourceHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 2);
+  int idx = (int)wrenGetSlotDouble(vm, 1);
+  wrenSetSlotDouble(vm, 0, getVolumeAudioSource(idx));
+}
+void setVolumeAudioSourceHook(WrenVM* vm){
     wrenEnsureSlots(vm, 3);
     int idx = (int)wrenGetSlotDouble(vm, 1);
-    float gain = (float)wrenGetSlotDouble(vm, 2);
-    setGainAudioSource(idx, gain);
+    setVolumeAudioSource(idx, wrenGetSlotDouble(vm, 2));
+}
+void loopAudioSourceHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 3);
+  int idx = (int)wrenGetSlotDouble(vm, 1);
+  loopAudioSource(idx, (int)wrenGetSlotBool(vm, 2));
+}
+void audioSourceIsLoopingHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 2);
+  int idx = (int)wrenGetSlotDouble(vm, 1);
+  wrenSetSlotBool(vm, 0, (bool)audioSourceIsLooping(idx));
 }
 
 WrenForeignMethodFn bindAudioSystem(
@@ -78,8 +97,20 @@ WrenForeignMethodFn bindAudioSystem(
       else if(strcmp(signature, "stopAudioSource(_)") == 0 && isStatic){
         return stopAudioSourceHook;
       }
-      else if(strcmp(signature, "setGainAudioSource(_,_)") == 0 && isStatic){
-        return setGainAudioSourceHook;
+      else if(strcmp(signature, "audioSourceIsPlaying(_)") == 0 && isStatic){
+        return audioSourceIsPlayingHook;
+      }
+      else if(strcmp(signature, "getVolumeAudioSource(_)") == 0 && isStatic){
+        return getVolumeAudioSourceHook;
+      }
+      else if(strcmp(signature, "setVolumeAudioSource(_,_)") == 0 && isStatic){
+        return setVolumeAudioSourceHook;
+      }
+      else if(strcmp(signature, "loopAudioSource(_,_)") == 0 && isStatic){
+        return loopAudioSourceHook;
+      }
+      else if(strcmp(signature, "audioSourceIsLooping(_)") == 0 && isStatic){
+        return audioSourceIsLoopingHook;
       }
     }
   }

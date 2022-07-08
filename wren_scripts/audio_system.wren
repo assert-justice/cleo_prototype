@@ -6,5 +6,9 @@ class AudioSystem {
     foreign static playAudioSource(idx)
     foreign static pauseAudioSource(idx)
     foreign static stopAudioSource(idx)
-    foreign static setGainAudioSource(idx, gain)
+    foreign static audioSourceIsPlaying(idx)
+    foreign static loopAudioSource(idx, shouldLoop)
+    foreign static audioSourceIsLooping(idx)
+    foreign static setVolumeAudioSource(idx, volume)
+    foreign static getVolumeAudioSource(idx)
 }
