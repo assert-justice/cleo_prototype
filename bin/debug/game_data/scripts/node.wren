@@ -8,8 +8,12 @@ class Node {
         _awake = false
         _visible = false
         _lastVisible = false
+        _pool = null
         setParent(parent)
         wake()
+    }
+    pool=(val){
+        _pool = val
     }
     transform{_tranform}
     awake{_awake}
@@ -31,6 +35,7 @@ class Node {
         // use to clean up a node so it can be reused
         _awake = false
         _visible = false
+        if(_pool) _pool.free(this)
     }
     addChild(child){
         // check if the node is already a child
@@ -38,11 +43,23 @@ class Node {
         _children.add(child)
         child.privateSetParent(this)
     }
+    removeChild(child){
+        // ensure the node is actually a child
+        var idx = _children.indexOf(child)
+        if(idx == -1) Fiber.abort("Tried to remove child '%(child)' from a node that is not its parent.")
+        _children.removeAt(idx)
+    }
     privateSetParent(parent){
         _parent = parent
     }
     setParent(parent){
-        if(parent == null) return
+        if(parent == null){
+            if (_parent){
+                // if node has a parent remove from current parent's children
+                _parent.removeChild(this)
+            } 
+            return
+        }
         parent.addChild(this)
     }
     getChildren(){_children}

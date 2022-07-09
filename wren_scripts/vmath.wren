@@ -16,6 +16,15 @@ class Vector {
         for (i in 0..._comps.count) {
             _comps[i] = _comps[i] * val
         }
+        dirty = true
+        return this
+    }
+    addVector(vec){
+        var end = _comps.count.min(vec.comps.count)
+        for (i in 0...end) {
+            _comps[i] = _comps[i] + vec.comps[i]
+        }
+        dirty = true
         return this
     }
     normalize(){
