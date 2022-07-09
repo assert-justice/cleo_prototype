@@ -110,6 +110,9 @@ WrenForeignMethodFn bindForeignMethod(WrenVM* vm,
   const char* signature)
 {
   WrenForeignMethodFn method;
+  // random is an optional module we are using that's built into the vm
+  // we don't need to report an error for it, the vm will bind it for us
+  if(strcmp(module, "random") == 0) return NULL;
   if ((method = bindFileIO(module, className, isStatic, signature))) return method;
   if ((method = bindEngine(module, className, isStatic, signature))) return method;  
   if ((method = bindInput(module, className, isStatic, signature))) return method;  

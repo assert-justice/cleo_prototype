@@ -11,6 +11,7 @@ import "animated_sprite" for AnimatedSprite
 import "audio_source" for AudioSource
 import "pool" for Pool
 import "bullet" for Bullet
+import "random" for Random
 
 class Game is Node {
     construct new(){
@@ -27,8 +28,8 @@ class Game is Node {
         }
         _pool = Pool.new(0) {Bullet.new(null, Vector2.new(4 * 24, 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
         _emitClock = 0
-        _emitTime = 1
-        _emitPos = 0
+        _emitTime = 0.25
+        _random = Random.new()
         // _spr = _pool.get(this)
         // _source = AudioSource.new(this, "game_data/sfx/Climb_Rope_Loop_00.wav")
         // _source.volume = 0.25
@@ -86,10 +87,8 @@ class Game is Node {
         } else{
             _emitClock = _emitTime
             var bullet = _pool.get(this)
-            bullet.transform.position.x = _emitPos
+            bullet.transform.position.x = _random.float() * 400
             bullet.transform.position.y = 0
-            _emitPos = _emitPos + 48
-            if(_emitPos > 400) _emitPos = 0
         }
         // if(Input.getButtonPressed("fire", 0)){
         //     // AudioSystem.playAudioSource(0)
