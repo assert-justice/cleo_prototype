@@ -31,6 +31,7 @@ class Game is Node {
         _emitClock = 0
         _emitTime = 0.25
         _random = Random.new()
+        // Engine.enableLogging("logging.txt")
         // _spr = _pool.get(this)
         // _source = AudioSource.new(this, "game_data/sfx/Climb_Rope_Loop_00.wav")
         // _source.volume = 0.25

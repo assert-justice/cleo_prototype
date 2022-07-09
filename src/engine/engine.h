@@ -30,4 +30,5 @@ int initEngine();
 void quitEngine();
 void gameLoop();
 void initRoot(const char* rootSrc);
+int enableLogging(const char* fname);
 #endif

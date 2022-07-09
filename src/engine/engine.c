@@ -37,6 +37,17 @@ int initEngine(){
     return 1;
 }
 
+int enableLogging(const char* fname){
+    engine.shouldLog = true;
+    if(engine.logFile) fclose(engine.logFile);
+    engine.logFile = fopen(fname, "w");
+    if (!engine.logFile){
+        engine.shouldLog = false;
+        return 0;
+    }
+    return 1;
+}
+
 void quitEngine(){
     glfwSetWindowShouldClose(engine.window, 1);
 }

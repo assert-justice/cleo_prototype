@@ -14,6 +14,12 @@ void initRootHook(WrenVM* vm){
   initRoot(src);
 }
 
+void enableLoggingHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 2);
+  const char* fname = wrenGetSlotString(vm, 1);
+  wrenSetSlotBool(vm, 0, (bool)enableLogging(fname));
+}
+
 WrenForeignMethodFn bindEngine(
   const char* module,
   const char* className,
@@ -27,6 +33,9 @@ WrenForeignMethodFn bindEngine(
       }
       else if(strcmp(signature, "privateInitRoot(_)") == 0 && isStatic){
         return initRootHook;
+      }
+      else if(strcmp(signature, "enableLogging(_)") == 0 && isStatic){
+        return enableLoggingHook;
       }
     }
   }

@@ -61,4 +61,5 @@ class Engine {
         __root.update(deltaTime)
     }
     foreign static quit()
+    foreign static enableLogging(fname)
 }
