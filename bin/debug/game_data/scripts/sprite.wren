@@ -34,7 +34,7 @@ class Sprite is Node {
             Renderer.setSpriteTransform(_handle, 
                 transform.position.x, 
                 transform.position.y, 
-                transform.position.z, 
+                visible ? transform.position.z : 200, // if invisible set z outside of the clip plane
                 transform.scale.x * _dimensions.x, 
                 transform.scale.y * _dimensions.y, 
                 transform.angle)

@@ -27,7 +27,7 @@ class Game is Node {
         }
         _pool = Pool.new(0) {Bullet.new(null, Vector2.new(4 * 24, 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
         _emitClock = 0
-        _emitTime = 0.25
+        _emitTime = 1
         _emitPos = 0
         // _spr = _pool.get(this)
         // _source = AudioSource.new(this, "game_data/sfx/Climb_Rope_Loop_00.wav")
