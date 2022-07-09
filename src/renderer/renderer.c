@@ -342,6 +342,6 @@ void setSpriteTransform(int idx, vec3 position, vec3 scale, double angle){
     if(!validateIdx(idx)) return;
     mat4x4Identity(engine.renderer.sprites[idx].matrix);
     mat4x4Scale(engine.renderer.sprites[idx].matrix, scale);
-    mat4x4Translate(engine.renderer.sprites[idx].matrix, position);
     mat4x4RotateZ(engine.renderer.sprites[idx].matrix, angle);
+    mat4x4Translate(engine.renderer.sprites[idx].matrix, position);
 }

@@ -1,3 +1,8 @@
+class VMath {
+    static degToRad(deg) {deg / 360 * Num.tau}
+    static radToDeg(rad) {rad / Num.tau * 360}
+}
+
 class Vector {
     construct new(comps, flag){
         _comps = comps
@@ -53,6 +58,12 @@ class Vector2 is Vector {
         comps[1] = val
         dirty = true
     }
+    rotate(angle){
+        var tempX = x * angle.cos - y * angle.sin
+        var tempY = x * angle.sin + y * angle.cos
+        x = tempX
+        y = tempY
+    }
 }
 
 class Vector3 is Vector {
@@ -84,6 +95,7 @@ class Transform {
         _dirty = [true]
         _position = Vector3.new(0, 0, 0, _dirty)
         _scale = Vector2.new(1, 1, _dirty)
+        _origin = Vector3.new(0, 0, 0, _dirty)
         _angle = 0
     }
     position{_position}
@@ -99,6 +111,11 @@ class Transform {
     angle{_angle}
     angle=(val){
         _angle = val
+        dirty = true
+    }
+    origin{_origin}
+    origin=(val){
+        _origin = val
         dirty = true
     }
     dirty{_dirty[0]}

@@ -31,9 +31,11 @@ class Sprite is Node {
             // System.print(transform.dirty)
         if (transform.dirty){
             transform.dirty = false
+            var tempOrigin = Vector2.new(transform.origin.x, transform.origin.y)
+            tempOrigin.rotate(transform.angle)
             Renderer.setSpriteTransform(_handle, 
-                transform.position.x, 
-                transform.position.y, 
+                transform.position.x - tempOrigin.x, 
+                transform.position.y - tempOrigin.y, 
                 visible ? transform.position.z : 200, // if invisible set z outside of the clip plane
                 transform.scale.x * _dimensions.x, 
                 transform.scale.y * _dimensions.y, 

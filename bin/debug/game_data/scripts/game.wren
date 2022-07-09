@@ -6,7 +6,7 @@ import "renderer" for Renderer
 import "audio_system" for AudioSystem
 import "tilemap" for TileMap
 import "sprite" for Sprite
-import "vmath" for Vector2, Vector3
+import "vmath" for VMath, Vector2, Vector3
 import "animated_sprite" for AnimatedSprite
 import "audio_source" for AudioSource
 import "pool" for Pool
@@ -27,6 +27,7 @@ class Game is Node {
             tracker = tracker + stats["height"]
         }
         _pool = Pool.new(0) {Bullet.new(null, Vector2.new(4 * 24, 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
+        _markPool = Pool.new(0) {Bullet.new(null, Vector2.new(3 * 24, 2 * 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
         _emitClock = 0
         _emitTime = 0.25
         _random = Random.new()
@@ -87,8 +88,15 @@ class Game is Node {
         } else{
             _emitClock = _emitTime
             var bullet = _pool.get(this)
+            var mark = _markPool.get(this)
             bullet.transform.position.x = _random.float() * 400
             bullet.transform.position.y = 0
+            mark.transform.position.x = bullet.transform.position.x
+            mark.transform.position.y = bullet.transform.position.y
+            bullet.transform.angle = VMath.degToRad(45)
+            bullet.transform.scale.x = 2
+            bullet.transform.origin.x = bullet.dimensions.x / 2
+            bullet.transform.origin.y = bullet.dimensions.y / 2
         }
         // if(Input.getButtonPressed("fire", 0)){
         //     // AudioSystem.playAudioSource(0)
