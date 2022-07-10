@@ -12,6 +12,7 @@ import "audio_source" for AudioSource
 import "pool" for Pool
 import "bullet" for Bullet
 import "random" for Random
+import "player" for Player
 
 class Game is Node {
     construct new(){
@@ -26,25 +27,26 @@ class Game is Node {
             var stats = Renderer.blitFileToAtlas(fname, 0, tracker)
             tracker = tracker + stats["height"]
         }
-        _pool = Pool.new(0) {Bullet.new(null, Vector2.new(4 * 24, 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
-        _markPool = Pool.new(0) {Bullet.new(null, Vector2.new(3 * 24, 2 * 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
-        _emitClock = 0
-        _emitTime = 0.25
-        _random = Random.new()
+        _tileMap = TileMap.new(this, 27, 15, 18, 18, 0, tracker)
+        _tileMap.addTemplate(0, 72, true)
+        for (x in 0..._tileMap.width) {
+            for(y in 0..._tileMap.height){
+                if (x == 0 || x == _tileMap.width-10 || y == 0 || y == _tileMap.height-1){
+                    _tileMap.setTile(0, x, y)
+                }
+            }
+        }
+        _player = Player.new(this, _tileMap)
+        // _player.setVisible(true)
+        // _pool = Pool.new(0) {Bullet.new(null, Vector2.new(4 * 24, 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
+        // _markPool = Pool.new(0) {Bullet.new(null, Vector2.new(3 * 24, 2 * 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
+        // _emitClock = 0
+        // _emitTime = 0.25
+        // _random = Random.new()
         // Engine.enableLogging("logging.txt")
         // _spr = _pool.get(this)
         // _source = AudioSource.new(this, "game_data/sfx/Climb_Rope_Loop_00.wav")
         // _source.volume = 0.25
-        // _tileMap = TileMap.new(this, 27, 15, 18, 18, 0, tracker)
-        // _tileMap.addTemplate(0, 72, true)
-        // _tileMap.addTemplate(0, 24, false)
-        // for (x in 0..._tileMap.width) {
-        //     for(y in 0..._tileMap.height){
-        //         if (x == 0 || x == _tileMap.width-10 || y == 0 || y == _tileMap.height-1){
-        //             _tileMap.setTile(0, x, y)
-        //         }
-        //     }
-        // }
         // _tileMap.setTile(0, 1, 1)
         // _tileMap.setTile(1, 1, 1)
         // _x = 100
@@ -84,21 +86,22 @@ class Game is Node {
         if(Input.getButtonPressed("ui_cancel", 0)){
             Engine.quit()
         }
-        if(_emitClock > 0){
-            _emitClock = _emitClock - deltaTime
-        } else{
-            _emitClock = _emitTime
-            var bullet = _pool.get(this)
-            var mark = _markPool.get(this)
-            bullet.transform.position.x = _random.float() * 400
-            bullet.transform.position.y = 0
-            mark.transform.position.x = bullet.transform.position.x
-            mark.transform.position.y = bullet.transform.position.y
-            bullet.transform.angle = VMath.degToRad(45)
-            bullet.transform.scale.x = 2
-            bullet.transform.origin.x = bullet.dimensions.x / 2
-            bullet.transform.origin.y = bullet.dimensions.y / 2
-        }
+        // System.print(_player.visible)
+        // if(_emitClock > 0){
+        //     _emitClock = _emitClock - deltaTime
+        // } else{
+        //     _emitClock = _emitTime
+        //     var bullet = _pool.get(this)
+        //     var mark = _markPool.get(this)
+        //     bullet.transform.position.x = _random.float() * 400
+        //     bullet.transform.position.y = 0
+        //     mark.transform.position.x = bullet.transform.position.x
+        //     mark.transform.position.y = bullet.transform.position.y
+        //     bullet.transform.angle = VMath.degToRad(45)
+        //     bullet.transform.scale.x = 2
+        //     bullet.transform.origin.x = bullet.dimensions.x / 2
+        //     bullet.transform.origin.y = bullet.dimensions.y / 2
+        // }
         // if(Input.getButtonPressed("fire", 0)){
         //     // AudioSystem.playAudioSource(0)
         //     _source.play()

@@ -55,6 +55,10 @@
         "keys":["left_shift"],
         "pad_buttons":["x"]
     },
+    "jump":{
+        "keys":["space"],
+        "pad_buttons":["a"]
+    },
     "move":{
         "x_axis":{
             "keys":[

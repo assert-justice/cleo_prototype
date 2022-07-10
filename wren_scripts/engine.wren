@@ -56,6 +56,9 @@ class Engine {
     static privateReady(root){
         __root = root
     }
+    static getRoot(){
+        return __root
+    }
     static update(deltaTime){
         Input.privatePollInputs(deltaTime)
         __root.update(deltaTime)

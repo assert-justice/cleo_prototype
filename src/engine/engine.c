@@ -92,7 +92,8 @@ double getTime(){
 
 void gameLoop(){
     double t = 0.0;
-    const double dt = 0.01; // 100 ticks / second
+    double tickRate = 100; // ticks / second
+    const double dt = 1.0 / tickRate; 
     double currentTime = getTime();
     double acc = 0.0;
     double scriptTime;

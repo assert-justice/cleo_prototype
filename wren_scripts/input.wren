@@ -4,16 +4,7 @@ import "vmath" for Vector2
 class Input {
 
     static privateInit(inputs, bindings){
-        // just worry about the game modes for now
-        // var bindings = {
-        //     "confirm": "enter",
-        //     "cancel": "escape",
-        //     "special": "space",
-        //     "up": "w",
-        //     "down": "s",
-        //     "left": "a",
-        //     "right": "d"
-        // }
+        // just worry about the game mode for now
         __baseController = {
             "buttons": [],
             "axis2": []
@@ -44,11 +35,6 @@ class Input {
                 }
             }
         }
-        // for (item in bindings) {
-        //     addButton(item.key)
-        //     addKeyToButton(item.key, getKeyCode(item.value), 0)
-        // }
-        // System.print(__inputState)
     }
     static addAxis2(name, deadzone, filter){
         __baseController["axis2"] = [name, deadzone, filter]
@@ -126,13 +112,7 @@ class Input {
         }
         return InputBindings.keyToCode[key]
     }
-    // validateButton(name){
-    //     if (!__inputState.containsKey(name)){
-    //         Fiber.abort("no button named '%(name)' has been configured")
-    //     }
-    // }
     static getButtonState(name, controllerIdx){
-        // validateButton(name)
         return __inputState[controllerIdx]["buttons"][name]
     }
     static getButton(name, controllerIdx){

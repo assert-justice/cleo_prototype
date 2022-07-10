@@ -16,6 +16,7 @@ class Node {
         _pool = val
     }
     transform{_tranform}
+    transform=(val){_tranform = val}
     awake{_awake}
     visible{_visible && _lastVisible}
     setVisible(val){_visible = val}
@@ -29,13 +30,19 @@ class Node {
     wake(){
         // use to set the initial state
         _awake = true
-        _visible = true
+        setVisible(true)
+        for (child in _children) {
+            child.wake()
+        }
     }
     sleep(){
         // use to clean up a node so it can be reused
         _awake = false
         _visible = false
         if(_pool) _pool.free(this)
+        for (child in _children) {
+            child.sleep()
+        }
     }
     addChild(child){
         // check if the node is already a child
