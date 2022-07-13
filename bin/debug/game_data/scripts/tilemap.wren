@@ -57,6 +57,21 @@ class TileMap is Sprite{
         if(val && val[1]) return true
         return false
     }
+    onGrid(x, y){
+        return x >= 0 && x < _width && y >= 0 && y < _height
+    }
+    getCellAtPosition(position){
+        var cell = position.copy().subVector(transform.position).addVector(transform.origin)
+        cell.x = (cell.x / _cellWidth).floor
+        cell.y = (cell.y / _cellHeight).floor
+        var tile = _tiles[cell.y][cell.x]
+        return [cell.x, cell.y, tile ? tile[0] : null, tile ? tile[1] : null]
+    }
+    raycast(start, direction, length){
+        // DDA algorithm
+        // (not yet implemented)
+        // inspired by https://github.com/OneLoneCoder/olcPixelGameEngine/blob/master/Videos/OneLoneCoder_PGE_RayCastDDA.cpp
+    }
     collide(position, velocity, boxWidth, boxHeight){
         // assume current position is clear
         var minX = -Num.infinity

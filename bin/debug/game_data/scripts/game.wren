@@ -13,6 +13,7 @@ import "pool" for Pool
 import "bullet" for Bullet
 import "random" for Random
 import "player" for Player
+import "goomba" for Goomba
 
 class Game is Node {
     construct new(){
@@ -31,12 +32,21 @@ class Game is Node {
         _tileMap.addTemplate(0, 72, true)
         for (x in 0..._tileMap.width) {
             for(y in 0..._tileMap.height){
-                if (x == 0 || x == _tileMap.width-10 || y == 0 || y == _tileMap.height-1){
+                if (x == 0 || x == _tileMap.width-1 || y == 0 || y == _tileMap.height-1){
                     _tileMap.setTile(0, x, y)
                 }
             }
         }
+        for(x in 8...16) {
+            _tileMap.setTile(0, x, 13)
+        }
         _player = Player.new(this, _tileMap)
+        _player.transform.position.x = 100
+        _player.transform.position.y = 100
+        _goomba = Goomba.new(this, _tileMap)
+        _goomba.transform.position.x = 200
+        _goomba.transform.position.y = 200
+
         // _player.setVisible(true)
         // _pool = Pool.new(0) {Bullet.new(null, Vector2.new(4 * 24, 24), Vector2.new(24, 24), Vector2.new(0, 3) )}
         // _markPool = Pool.new(0) {Bullet.new(null, Vector2.new(3 * 24, 2 * 24), Vector2.new(24, 24), Vector2.new(0, 3) )}

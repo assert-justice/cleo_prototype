@@ -32,6 +32,14 @@ class Vector {
         dirty = true
         return this
     }
+    subVector(vec){
+        var end = _comps.count.min(vec.comps.count)
+        for (i in 0...end) {
+            _comps[i] = _comps[i] - vec.comps[i]
+        }
+        dirty = true
+        return this
+    }
     normalize(){
         var len = length
         if(len == 0) return this // cannot normalize a vector of length 0
@@ -64,6 +72,9 @@ class Vector2 is Vector {
         x = tempX
         y = tempY
     }
+    copy(){
+        return Vector2.new(x, y)
+    }
 }
 
 class Vector3 is Vector {
@@ -87,6 +98,9 @@ class Vector3 is Vector {
     z=(val){
         comps[2] = val
         dirty = true
+    }
+    copy(){
+        return Vector3.new(x, y, z)
     }
 }
 

@@ -12,6 +12,18 @@ class Sprite is Node {
         _dirty = [true]
         _offset = Vector2.new(xOffset, yOffset, _dirty)
         _dimensions = Vector2.new(width, height, _dirty)
+        _hflip = false
+        _vflip = false
+    }
+    hflip{_hflip}
+    hflip=(val){
+        _hflip = val
+        _dirty[0] = true
+    }
+    vflip{_vflip}
+    vflip=(val){
+        _vflip = val
+        _dirty[0] = true
     }
     offset{_offset}
     offset=(val){
@@ -25,7 +37,7 @@ class Sprite is Node {
     }
     update(deltaTime){
         if(_dirty[0]){
-            Renderer.setSpriteDimensions(_handle, _offset.x, _offset.y, _dimensions.x, _dimensions.y)
+            Renderer.setSpriteDimensions(_handle, _offset.x + (hflip ? _dimensions.x : 0), _offset.y + (vflip ? _dimensions.y : 0), _dimensions.x - (hflip ? _dimensions.x * 2 : 0), _dimensions.y - (vflip ? _dimensions.y * 2 : 0))
             _dirty[0] = false
         }
             // System.print(transform.dirty)

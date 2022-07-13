@@ -8,8 +8,6 @@ class Player is Node {
         super(parent)
         _sprite = Sprite.new(this, 0, 0, 24, 24)
         _sprite.transform = transform
-        transform.position.x = 100
-        transform.position.y = 100
         _tileMap = tileMap
         _vel = Vector3.new(0,0,0)
         _speed = 200
@@ -24,6 +22,7 @@ class Player is Node {
         _vel.y = _vel.y + _gravity * deltaTime
         if(Input.getButtonPressed("jump", 0)) _vel.y = -_jumpSpeed * deltaTime
         var newPos = _tileMap.collide(transform.position, _vel, 24, 24)
+        if (newPos.y == transform.position.y) _vel.y = 0
         transform.position = newPos
         super.update(deltaTime)
     }
