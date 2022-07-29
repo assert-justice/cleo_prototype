@@ -1,3 +1,4 @@
+#version 130
 varying vec2 TexCoord;
 uniform sampler2D ourTexture;
 

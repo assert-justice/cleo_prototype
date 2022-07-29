@@ -1,3 +1,4 @@
+#version 130
 attribute vec3 aPos;
 attribute vec2 aCoord;
 varying vec2 TexCoord;
