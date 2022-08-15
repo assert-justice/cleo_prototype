@@ -26,7 +26,7 @@ WrenForeignMethodFn bindInput(
   bool isStatic,
   const char* signature)
 {
-  if (strcmp(module, "input") == 0){
+  if (strcmp(module, "engine") == 0){
     if (strcmp(className, "Input") == 0){
       if(strcmp(signature, "getKey(_)") == 0 && isStatic){
         return getKeyHook;

@@ -21,14 +21,14 @@ typedef struct {
     AudioSystem audioSystem;
     FILE* logFile;
     int shouldLog;
+    char path[256];
 } Engine;
 
 // Initialize the engine. 
 //
 // Starts wren vm, reads settings, and launches subsystems.
-int initEngine();
+int initEngine(const char* srcPath);
 void quitEngine();
 void gameLoop();
-void initRoot(const char* rootSrc);
 int enableLogging(const char* fname);
 #endif

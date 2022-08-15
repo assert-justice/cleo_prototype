@@ -20,8 +20,8 @@
 
 extern Engine engine;
 
-// int main(int argc, char* argv[]){
-int main(){
-    initEngine();
+int main(int argc, char* argv[]){
+    const char* path = argc > 1 ? argv[1] : "game_data/main.wren";
+    initEngine(path);
     return 0;
 }

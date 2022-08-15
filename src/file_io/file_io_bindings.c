@@ -32,8 +32,8 @@ WrenForeignMethodFn bindFileIO(
   bool isStatic,
   const char* signature)
 {
-  if (strcmp(module, "fs") == 0){
-    if (strcmp(className, "FileSystem") == 0){
+  if (strcmp(module, "engine") == 0){
+    if (strcmp(className, "File") == 0){
       if(strcmp(signature, "read(_)") == 0 && isStatic){
         return readFileHook;
       }

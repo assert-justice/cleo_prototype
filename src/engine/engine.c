@@ -1,39 +1,51 @@
 #include "engine.h"
-#include "../wren_inc.h"
+#include "stdio.h"
+#include "string.h"
+#include "sys/time.h"
+// #include "../wren_inc.h"
+#include "../file_io/file_io.h"
 #include "../window/window.h"
 #include "../audio_system/audio_system.h"
-#include "stdio.h"
-#include "sys/time.h"
 
 Engine engine = {0};
 
-int initEngine(){
-    // grab logging file
-    // engine.shouldLog = 1;
-    if(engine.shouldLog) engine.logFile = fopen("logging.txt", "w");
-    // init audio system (duh)
+int initEngine(const char* srcPath){
+    // Get the source of our main.wren file.
+    if(!fileExists(srcPath)){
+        printf("No file found at path '%s'\n", srcPath);
+        return 0;
+    }
+    // Find last '/' in srcPath. The substring up to that point is the root path for filesystem calls.
+    int idx = 0;
+    for (size_t i = 0; i < strlen(srcPath); i++)
+    {
+        if(srcPath[i] == '/'){
+            idx = (int)i;
+        }
+    }
+    strncpy(engine.path, srcPath, idx);
+    // Read src file
+    const char* src = readFile(srcPath);
+    
+    // init audio system
     initAudioSystem();
     // init vm
     engine.vm = wrenHelpInit();
     // make call handles for engine methods
     engine.updateHandle = wrenMakeCallHandle(engine.vm, "update(_)");
-    WrenHandle* initHandle = wrenMakeCallHandle(engine.vm, "privateInit()");
-    // WrenHandle* launchHandle = wrenMakeCallHandle(engine.vm, "launch()");
+    WrenHandle* initHandle = wrenMakeCallHandle(engine.vm, "init()");
     // actually execute the script. Otherwise we crash
-    wrenInterpret(engine.vm, "engine", engine_script);
-    // get the handle for the engine class
+    wrenInterpret(engine.vm, "main", src);
+    // get the handle for the main class
     wrenEnsureSlots(engine.vm, 1);
-    wrenGetVariable(engine.vm, "engine", "Engine", 0);
+    wrenGetVariable(engine.vm, "main", "Main", 0);
     engine.classHandle = wrenGetSlotHandle(engine.vm, 0);
     // call init on engine class
     wrenCall(engine.vm, initHandle);
-    // store the source to the root class
-    const char* rootSrc = wrenGetSlotString(engine.vm, 0);
     // we no longer need the init handle
     wrenReleaseHandle(engine.vm, initHandle);
-    // initWindow();
-    initRoot(rootSrc);
-    // gameLoop();
+    // initRoot(rootSrc);
+    gameLoop();
     return 1;
 }
 
@@ -53,35 +65,12 @@ void quitEngine(){
 }
 
 void freeEngine(){
+    freeRenderer();
     freeWindow();
     wrenReleaseHandle(engine.vm, engine.classHandle);
     wrenReleaseHandle(engine.vm, engine.updateHandle);
     freeAudioSystem();
     if(engine.shouldLog) fclose(engine.logFile);
-}
-
-void initRoot(const char* rootSrc){
-    // run the code in our root script
-    wrenInterpret(engine.vm, "game", rootSrc);
-    wrenEnsureSlots(engine.vm, 2);
-    WrenHandle* constructorHandle = wrenMakeCallHandle(engine.vm, "new()");
-    // set the game class to be at slot 0
-    wrenGetVariable(engine.vm, "game", "Game", 0);
-    // call new on game class and set the new instance to slot zero
-    wrenCall(engine.vm, constructorHandle);
-    // save a handle to the root
-    WrenHandle* rootHandle = wrenGetSlotHandle(engine.vm, 0);
-    wrenReleaseHandle(engine.vm, constructorHandle);
-    // get the handle to set the engine's root
-    WrenHandle* callHandle = wrenMakeCallHandle(engine.vm, "privateReady(_)");
-    wrenEnsureSlots(engine.vm, 2);
-    // set the engine class to slot 0
-    wrenSetSlotHandle(engine.vm, 0, engine.classHandle);
-    // set the root node to slot 1
-    wrenSetSlotHandle(engine.vm, 1, rootHandle);
-    wrenCall(engine.vm, callHandle);
-    wrenReleaseHandle(engine.vm, callHandle);    
-    gameLoop();
 }
 
 double getTime(){

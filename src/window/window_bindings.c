@@ -100,9 +100,9 @@ WrenForeignMethodFn bindWindow(
   bool isStatic,
   const char* signature)
 {
-  if (strcmp(module, "window") == 0){
+  if (strcmp(module, "engine") == 0){
     if (strcmp(className, "Window") == 0){
-      if(strcmp(signature, "privateInit(_)") == 0 && isStatic){
+      if(strcmp(signature, "init(_)") == 0 && isStatic){
         return windowInitHook;
       }
       else if(strcmp(signature, "getStats()") == 0 && isStatic){

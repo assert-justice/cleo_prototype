@@ -48,50 +48,51 @@ void errorFn(WrenVM* vm, WrenErrorType errorType,
 WrenLoadModuleResult moduleLoader(WrenVM* vm, const char* name)
 {
   WrenLoadModuleResult result = {0};
-  if (strcmp(name, "json") == 0)
+  if (strcmp(name, "engine") == 0)
   {
-    result.source = json_script;
+    result.source = engine_script;
   }
-  else if (strcmp(name, "fs") == 0)
-  {
-    result.source = file_system_script;
-  }
-  else if (strcmp(name, "engine") == 0)
-  {
-    result.source = file_system_script;
-  }
-  else if (strcmp(name, "input") == 0)
-  {
-    result.source = input_script;
-  }
-  else if (strcmp(name, "input_codes") == 0)
-  {
-    result.source = input_codes_script;
-  }
-  else if (strcmp(name, "window") == 0)
-  {
-    result.source = window_script;
-  }
-  else if (strcmp(name, "renderer") == 0)
-  {
-    result.source = renderer_script;
-  }
-  else if (strcmp(name, "audio_system") == 0)
-  {
-    result.source = audio_system_script;
-  }
-  else if (strcmp(name, "vmath") == 0)
-  {
-    result.source = vmath_script;
-  }
+  // else if (strcmp(name, "json") == 0)
+  // {
+  //   result.source = json_script;
+  // }
+  // else if (strcmp(name, "fs") == 0)
+  // {
+  //   result.source = file_system_script;
+  // }
+  // else if (strcmp(name, "input") == 0)
+  // {
+  //   result.source = input_script;
+  // }
+  // else if (strcmp(name, "input_codes") == 0)
+  // {
+  //   result.source = input_codes_script;
+  // }
+  // else if (strcmp(name, "window") == 0)
+  // {
+  //   result.source = window_script;
+  // }
+  // else if (strcmp(name, "renderer") == 0)
+  // {
+  //   result.source = renderer_script;
+  // }
+  // else if (strcmp(name, "audio_system") == 0)
+  // {
+  //   result.source = audio_system_script;
+  // }
+  // else if (strcmp(name, "vmath") == 0)
+  // {
+  //   result.source = vmath_script;
+  // }
   else
   {
     // load user modules
-    char buffer[200] = {0};
-    strcat(buffer, "game_data/scripts/");
+    char buffer[256] = {0};
+    strcat(buffer, engine.path);
+    strcat(buffer, "/");
     strcat(buffer, name);
     strcat(buffer, ".wren");
-    // printf("%s\n", buffer);
+    printf("%s\n", buffer);
     if (fileExists(buffer)){
       result.source = readFile(buffer);
     }

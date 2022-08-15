@@ -74,8 +74,8 @@ WrenForeignMethodFn bindAudioSystem(
   bool isStatic,
   const char* signature)
 {
-  if (strcmp(module, "audio_system") == 0){
-    if (strcmp(className, "AudioSystem") == 0){
+  if (strcmp(module, "engine") == 0){
+    if (strcmp(className, "Audio") == 0){
       if(strcmp(signature, "addAudioSource()") == 0 && isStatic){
         return addAudioSourceHook;
       }

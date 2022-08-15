@@ -9,10 +9,10 @@ void quitHook(WrenVM* vm){
   quitEngine();
 }
 
-void initRootHook(WrenVM* vm){
-  const char* src = wrenGetSlotString(vm, 1);
-  initRoot(src);
-}
+// void initRootHook(WrenVM* vm){
+//   const char* src = wrenGetSlotString(vm, 1);
+//   // initRoot(src);
+// }
 
 void enableLoggingHook(WrenVM* vm){
   wrenEnsureSlots(vm, 2);
@@ -31,9 +31,9 @@ WrenForeignMethodFn bindEngine(
       if(strcmp(signature, "quit()") == 0 && isStatic){
         return quitHook;
       }
-      else if(strcmp(signature, "privateInitRoot(_)") == 0 && isStatic){
-        return initRootHook;
-      }
+      // else if(strcmp(signature, "privateInitRoot(_)") == 0 && isStatic){
+      //   return initRootHook;
+      // }
       else if(strcmp(signature, "enableLogging(_)") == 0 && isStatic){
         return enableLoggingHook;
       }

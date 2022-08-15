@@ -89,9 +89,9 @@ WrenForeignMethodFn bindRenderer(
   bool isStatic,
   const char* signature)
 {
-  if (strcmp(module, "renderer") == 0){
+  if (strcmp(module, "engine") == 0){
     if (strcmp(className, "Renderer") == 0){
-      if(strcmp(signature, "privateInit(_)") == 0 && isStatic){
+      if(strcmp(signature, "init(_)") == 0 && isStatic){
         return initRendererHook;
       }
       else if(strcmp(signature, "setClearColor(_,_,_)") == 0 && isStatic){
