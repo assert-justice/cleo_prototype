@@ -168,19 +168,6 @@ void initRenderer(int rendererWidth, int rendererHeight){
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     engine.renderer.renderTexture = renderTexture;
     engine.renderer.renderBuffer = renderBuffer;
-
-    // engine.renderer.numSprites = 2;
-    // mat4x4Identity(engine.renderer.sprites[0].matrix);
-    // mat4x4Scale(engine.renderer.sprites[0].matrix, vec3New(24.0f, 24.0f, 0.0f));
-    // float cell = 24.0f / ATLAS_WIDTH;
-    // engine.renderer.sprites[0].dimensions = vec4New(0, cell, cell, cell);
-
-    // mat4x4Identity(engine.renderer.sprites[1].matrix);
-    // mat4x4Scale(engine.renderer.sprites[1].matrix, vec3New(24.0f, 24.0f, 0.0f));
-    // mat4x4Translate(engine.renderer.sprites[1].matrix, vec3New(24.0f, 0.0f, 0.0f));
-    // engine.renderer.sprites[1].dimensions = vec4New(cell, cell, cell, cell);
-    // int width, height;
-    // blitFileToAtlas("game_data/sprites/characters_packed.png",0,0,&width,&height);
 }
 
 void freeRenderer(){
@@ -199,7 +186,6 @@ int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* widt
     // stbi_set_flip_vertically_on_load(1);
     unsigned char* data = stbi_load(fname, width, height, &numChannels, 0);
     if(data){
-        // printf("%i %i %i %i\n", data[0], data[1], data[2], data[3]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, *width, *height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -222,9 +208,6 @@ int blitFileToAtlas(const char* fname, double xOffset, double yOffset, int* widt
         engine.renderer.shaderProgram, 
         glGetUniformLocation(engine.renderer.shaderProgram, "proj"), 
         1, GL_FALSE, (const GLfloat*)&temp);
-    // glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // glClearColor(engine.renderer.clearR, engine.renderer.clearG, engine.renderer.clearB, 1.0f);
     glUseProgram(engine.renderer.shaderProgram);
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(engine.renderer.VAO);
@@ -344,4 +327,14 @@ void setSpriteTransform(int idx, vec3 position, vec3 scale, double angle){
     mat4x4Scale(engine.renderer.sprites[idx].matrix, scale);
     mat4x4RotateZ(engine.renderer.sprites[idx].matrix, angle);
     mat4x4Translate(engine.renderer.sprites[idx].matrix, position);
+}
+void setChildSpriteTransform(int parentId, int idx, vec3 position, vec3 scale, double angle){
+    if(!validateIdx(idx) || !validateIdx(parentId)) return;
+    mat4x4 temp;
+    mat4x4Identity(temp);
+    // mat4x4Identity(engine.renderer.sprites[idx].matrix);
+    mat4x4Scale(temp, scale);
+    mat4x4RotateZ(temp, angle);
+    mat4x4Translate(temp, position);
+    mat4x4MultiplyMatrix(engine.renderer.sprites[idx].matrix, temp, engine.renderer.sprites[parentId].matrix);
 }

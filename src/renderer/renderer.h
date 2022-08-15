@@ -40,4 +40,5 @@ int getNumSprites();
 int getMaxSprites();
 void setSpriteDimensions(int idx, double xOffset, double yOffset, double width, double height);
 void setSpriteTransform(int idx, vec3 position, vec3 scale, double angle);
+void setChildSpriteTransform(int parentId, int idx, vec3 position, vec3 scale, double angle);
 #endif

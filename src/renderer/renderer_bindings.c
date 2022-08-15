@@ -59,6 +59,22 @@ void setSpriteTransformHook(WrenVM* vm){
     vec3New(xScale, yScale, 0.0),
     angle);
 }
+void setChildSpriteTransformHook(WrenVM* vm){
+  wrenEnsureSlots(vm, 9);
+  int parentId = (int)wrenGetSlotDouble(vm, 1);
+  int idx = (int)wrenGetSlotDouble(vm, 2);
+  double xPos = wrenGetSlotDouble(vm, 3);
+  double yPos = wrenGetSlotDouble(vm, 4);
+  double zPos = wrenGetSlotDouble(vm, 5);
+  double xScale = wrenGetSlotDouble(vm, 6);
+  double yScale = wrenGetSlotDouble(vm, 7);
+  double angle = wrenGetSlotDouble(vm, 8);
+  setChildSpriteTransform(parentId,
+    idx, 
+    vec3New(xPos, yPos, zPos), 
+    vec3New(xScale, yScale, 0.0),
+    angle);
+}
 void blitFileToAtlasHook(WrenVM* vm){
   wrenEnsureSlots(vm, 4);
   const char* fname = wrenGetSlotString(vm, 1);
@@ -111,6 +127,9 @@ WrenForeignMethodFn bindRenderer(
       }
       else if(strcmp(signature, "setSpriteTransform(_,_,_,_,_,_,_)") == 0 && isStatic){
         return setSpriteTransformHook;
+      }
+      else if(strcmp(signature, "setChildSpriteTransform(_,_,_,_,_,_,_,_)") == 0 && isStatic){
+        return setChildSpriteTransformHook;
       }
       else if(strcmp(signature, "blitFileToAtlas(_,_,_)") == 0 && isStatic){
         return blitFileToAtlasHook;

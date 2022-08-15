@@ -19,7 +19,10 @@ class Main {
         Renderer.blitFileToAtlas("game_data/sprites/characters_packed.png", 0, 0)
         Renderer.addSprite()
         Renderer.setSpriteDimensions(0, 0, 0, 24, 24)
-        Renderer.setSpriteTransform(0, 0, 0, 0, 24, 24, 0)
+        Renderer.setSpriteTransform(0, 100, 100, 0, 2, 1, 0.5)
+        Renderer.addSprite()
+        Renderer.setSpriteDimensions(1, 24, 0, 24, 24)
+        Renderer.setChildSpriteTransform(0, 1, 24, 0, 0, 1, 1, 0)
     }
     static update(deltaTime){
         if (Input.getKey(__esc)) Engine.quit()
